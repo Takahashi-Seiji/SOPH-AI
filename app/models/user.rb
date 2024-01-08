@@ -4,21 +4,19 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :school_users
-  has_many :schools, through: :school_users
   # TEACHER
   has_many :lectures, dependent: :destroy
 
-  #STUDENT
+  # STUDENT
   has_many :student_lectures
   has_many :quizzes, dependent: :destroy
 
 
-  def teacher
+  def teacher?
     role == "teacher"
   end
 
-  def student
+  def student?
     role == "student"
   end
 end
