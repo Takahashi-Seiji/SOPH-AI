@@ -11,6 +11,7 @@ class User < ApplicationRecord
 
   #STUDENT
   has_many :student_lectures
+  has_many :quizzes, dependent: :destroy
 
 
   def teacher
