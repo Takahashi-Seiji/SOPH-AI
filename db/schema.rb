@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_08_195604) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_08_205201) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_08_195604) do
     t.bigint "lecture_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status"
     t.index ["lecture_id"], name: "index_quizzs_on_lecture_id"
   end
 
@@ -78,6 +79,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_08_195604) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "student_lectures", force: :cascade do |t|
+    t.bigint "lecture_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lecture_id"], name: "index_student_lectures_on_lecture_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -100,4 +108,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_08_195604) do
   add_foreign_key "questions", "quizzs"
   add_foreign_key "quizzs", "lectures"
   add_foreign_key "school_users", "schools"
+  add_foreign_key "student_lectures", "lectures"
 end
