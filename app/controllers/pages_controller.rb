@@ -5,6 +5,7 @@ class PagesController < ApplicationController
   end
 
   def dashboard
-
+    @lectures = Lecture.all
+    @quizzes = Quiz.all
   end
 end
