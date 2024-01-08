@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  ROLES = ["teacher", "student"].freeze
+
   # TEACHER
   has_many :lectures, dependent: :destroy
 
