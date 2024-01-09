@@ -6,6 +6,86 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
+cloudinary:
+  service: Cloudinary
+  folder: <%= Rails.env %>
+  upload:
+    resource_type: auto
+    eager:
+      quality: auto:good
+      transformation:
+        width: 300
+        height: 300
+        crop: fill
+        gravity: auto
+        zoom: 1.0
+        format: jpg
+        effect: auto_contrast
+        radius: 20
+        border: 5px_solid_black
+        background: white
+        angle: 0
+        opacity: 100
+        overlay: text:arial_100_bold:Hello
+        underlay: text:arial_100_bold:World
+        default_image: default
+        delay: 0
+        color: black
+        dpr: 1.0
+        flags: progressive
+        transformation: fetch
+        page: 1
+        density: 1.0
+        fetch_format: auto
+        quality: auto
+        prefix: sample
+        x: 0
+        y: 0
+        aspect_ratio: 1.0
+        format: jpg
+        height: 300
+        width: 300
+        crop: fill
+        gravity: auto
+        zoom: 1.0
+        effect: auto_contrast
+        radius: 20
+        border: 5px_solid_black
+        background: white
+        angle: 0
+        opacity: 100
+        overlay: text:arial_100_bold:Hello
+        underlay: text:arial_100_bold:World
+        default_image: default
+        delay: 0
+        color: black
+        dpr: 1.0
+        flags: progressive
+        transformation: fetch
+        page: 1
+        density: 1.0
+        fetch_format: auto
+        quality: auto
+        prefix: sample
+        x: 0
+        y: 0
+        aspect_ratio: 1.0
+        format: jpg
+        height: 300
+        width: 300
+        crop: fill
+        gravity: auto
+        zoom: 1.0
+        effect: auto_contrast
+        radius: 20
+        border: 5px_solid_black
+        background: white
+        angle: 0
+        opacity: 100
+        overlay: text:arial_100_bold:Hello
+        underlay: text:arial_100_bold:World
+        default_image: default_image-path
+
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
 #   service: S3

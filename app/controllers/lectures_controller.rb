@@ -22,7 +22,7 @@ class LecturesController < ApplicationController
   private
 
   def lecture_params
-    params.require(:lecture).permit(:title, :content)
+    params.require(:lecture).permit(:title, :content, photos: [])
   end
 
   def create_student_lecture
