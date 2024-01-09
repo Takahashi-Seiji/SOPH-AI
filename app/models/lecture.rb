@@ -3,7 +3,7 @@ class Lecture < ApplicationRecord
   has_one :chat, dependent: :destroy
   has_many_attached :photos
   has_many :notes, dependent: :destroy
-  has_many :quizzes, dependent: :destroy
+  has_many :quizzes, dependent: :destroy, class_name: "Quizz"
   has_many :student_lectures, dependent: :destroy
   has_many :students, through: :student_lectures, source: :user
 end

@@ -1,0 +1,4 @@
+<div>
+  <button data-action="click->lecture#displayCode">Get code to share with students!</button>
+  <h3 data-lecture-target="code" class="d-none"><%= lecture_url(@lecture, code: @lecture.shareable_link ) %></h3>
+</div>

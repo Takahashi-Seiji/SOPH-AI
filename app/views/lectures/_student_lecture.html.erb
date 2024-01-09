@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="bg-primary col-8" style="min-height: 100vh;">
+    <h1 id="lecture-title"><%= @lecture.title %></h1>
+    <h2 id="lecture-content"><%= simple_format(@lecture.content) %></h2>
+  </div>
+  <div class="col-4">
+    <h1>Your notes: </h1>
+    <div data-lecture-target="notes">
+      <h2>note 1 example</h2>
+    </div>
+    <button data-action="click->lecture#displayNoteForm">Take notes</button>
+    <div class="d-none" data-lecture-target="noteForm">
+      <%= simple_form_for [@lecture, Note.new], remote: true, data: {action: "submit->lecture#addNote"} do |f| %>
+        <%= f.text_field :content, as: :text, data: {lecture_target: "noteContent"} %>
+        <%= f.button :submit, "Save Note" %>
+      <% end %>
+    </div>
+  </div>
+</div>

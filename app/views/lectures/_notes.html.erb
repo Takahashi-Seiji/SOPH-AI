@@ -1,0 +1,6 @@
+<div data-lecture-target="form">
+  <%= form_with model: @lecture, url: lecture_notes_path(@lecture), local: true do |form| %>
+    <%= form.text_area :notes %>
+    <%= form.submit %>
+  <% end %>
+</div>

@@ -3,7 +3,11 @@ class LecturesController < ApplicationController
     @lecture = Lecture.find(params[:id])
     redirect_to root_path unless lecture_accessible?
 
-    create_student_lecture if current_user.student?
+    @note = Note.new
+    if current_user.student?
+      create_student_lecture
+      @note = Note.find_or_initialize_by(user: current_user, lecture: @lecture)
+    end
   end
 
   def new
@@ -17,6 +21,23 @@ class LecturesController < ApplicationController
     if @lecture.save
       redirect_to lecture_path(@lecture)
     end
+  end
+
+  def edit
+    @lecture = Lecture.find(params[:id])
+  end
+
+  def update
+    @lecture = Lecture.find(params[:id])
+    if @lecture.update(lecture_params)
+      redirect_to lecture_path(@lecture)
+    end
+  end
+
+  def destroy
+    @lecture = Lecture.find(params[:id])
+    @lecture.destroy
+    redirect_to dashboard_path
   end
 
   private
