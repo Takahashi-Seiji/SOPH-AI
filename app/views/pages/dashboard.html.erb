@@ -1,5 +1,2 @@
-<% if current_user.teacher? %>
-  <%= render 'teacher_dashboard' %>
-<% elsif current_user.student? %>
-  <%= render 'student_dashboard' %>
-<% end %>
+<%= link_to "Generate Lecture", new_lecture_path %>
+
