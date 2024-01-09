@@ -32,6 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_08_224652) do
     t.bigint "user_id", null: false
     t.string "title"
     t.string "content"
+    t.string "shareable_link"
     t.date "date"
     t.integer "lecture_number"
     t.datetime "created_at", null: false
@@ -71,24 +72,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_08_224652) do
     t.index ["lecture_id"], name: "index_quizzs_on_lecture_id"
   end
 
-  create_table "school_users", force: :cascade do |t|
-    t.bigint "school_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["school_id"], name: "index_school_users_on_school_id"
-  end
-
-  create_table "schools", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "student_lectures", force: :cascade do |t|
     t.bigint "lecture_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["lecture_id"], name: "index_student_lectures_on_lecture_id"
+    t.index ["user_id"], name: "index_student_lectures_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -116,6 +106,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_08_224652) do
   add_foreign_key "notes", "users", column: "student_id"
   add_foreign_key "questions", "quizzs"
   add_foreign_key "quizzs", "lectures"
-  add_foreign_key "school_users", "schools"
   add_foreign_key "student_lectures", "lectures"
+  add_foreign_key "student_lectures", "users"
 end

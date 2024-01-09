@@ -4,6 +4,7 @@ class CreateLectures < ActiveRecord::Migration[7.1]
       t.references :user, null: false, foreign_key: true
       t.string :title
       t.string :content
+      t.string :shareable_link
       t.date :date
       t.integer :lecture_number
 
