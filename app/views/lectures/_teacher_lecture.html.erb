@@ -1,0 +1,20 @@
+<div>
+  <div class="bg-primary">
+    <h1 id="lecture-title"><%= @lecture.title %></h1>
+    <h2 id="lecture-content"><%= simple_format(@lecture.content) %></h2>
+  </div>
+  <div class="bg-danger">
+    <% if current_user.teacher? %>
+      <%= render 'shareable_link', lecture: @lecture %>
+    <% end %>
+  </div>
+  <%= link_to "Edit lecture", '#', data: {action: "click->lecture#displayEditForm"} %>
+  <%= link_to "Delete this lecture", lecture_path(@lecture), data: { turbo_method: :delete, turbo_confirm: 'Are you Sure' } %>
+  <div class="d-none" data-lecture-target="editForm">
+    <%= simple_form_for @lecture, remote: true do |f| %>
+      <%= f.input :title %>
+      <%= f.input :content, as: :text %>
+      <%= f.button :submit, "Update" %>
+    <% end %>
+  </div>
+</div>

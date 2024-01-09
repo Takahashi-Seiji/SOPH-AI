@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   resources :lectures do
     resources :quizzes, only: [:create, :update, :destroy]
-    resources :notes, only: [:create, :update,:destroy]
+    resources :notes
     resources :chats, only: [:create, :update, :destroy] do
       resources :messages, only: [:create, :update, :destroy]
     end

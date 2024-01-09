@@ -1,3 +1,7 @@
-<h1><%= @lecture.title %></h1>
-
-<h3><%= lecture_url(@lecture, code: @lecture.shareable_link ) %></h3>
+<div class="container" data-controller="lecture">
+  <% if current_user.teacher? %>
+    <%= render 'teacher_lecture', lecture: @lecture %>
+  <% elsif %>
+    <%= render 'student_lecture', lecture: @lecture %>
+  <% end %>
+</div>
