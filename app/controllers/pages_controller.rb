@@ -5,6 +5,10 @@ class PagesController < ApplicationController
   end
 
   def dashboard
+    @student = current_user
+    @submitted_quizzes = @student.quizzes.where(status: 'submitted')
+    @average_score = @submitted_quizzes.average(:score) if @submitted_quizzes.any?
+
   end
 
   def welcome

@@ -16,6 +16,7 @@ class LecturesController < ApplicationController
       @note = Note.new
       create_student_lecture
       @note = Note.find_or_initialize_by(user: current_user, lecture: @lecture)
+      @quiz = Quiz.find_or_initialize_by(user: current_user, lecture: @lecture)
     end
   end
 

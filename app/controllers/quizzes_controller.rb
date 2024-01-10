@@ -1,4 +1,5 @@
 class QuizzesController < ApplicationController
+  before_action :set_quiz, only: [:show, :edit, :update]
   def show
     @quiz = Quiz.find(params[:id])
     authorize @quiz, :view_submitted_quizzes?
@@ -17,7 +18,26 @@ class QuizzesController < ApplicationController
     authorize @quiz, :create?
   end
 
+  def update
+    if @quiz.update(quiz_params)
+      if params[:commit] == 'Submit Quiz'
+        @quiz.submitted!
+        @quiz.score = @quiz.calculate_score
+        @quiz.save
+      end
+      redirect_to @quiz, notice: 'Quiz was successfully updated.'
+    else
+      render :edit
+    end
+  end
 
+  private
 
+  def set_quiz
+    @quiz = Quiz.find(params[:id])
+  end
 
+  def quiz_params
+    params.require(:quiz).permit(:status)
+  end
 end
