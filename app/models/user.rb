@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   # TEACHER
   has_many :lectures, dependent: :destroy
+  has_many :students, through: :lectures
 
   # STUDENT
   has_many :student_lectures

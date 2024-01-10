@@ -7,6 +7,8 @@ class LecturesController < ApplicationController
 
     @notes = @lecture.notes
     @chat = @lecture.chat || @lecture.create_chat
+
+    @message = Message.new
     if current_user.student?
       authorize current_user, :create_note?
       authorize current_user, :start_chat?
@@ -18,8 +20,8 @@ class LecturesController < ApplicationController
   end
 
   def new
+    # authorize current_user, :create_lecture?
     @lecture = Lecture.new
-    authorize current_user, :create_lecture?
   end
 
   def create
