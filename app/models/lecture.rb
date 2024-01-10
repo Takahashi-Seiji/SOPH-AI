@@ -7,7 +7,6 @@ class Lecture < ApplicationRecord
   has_many :student_lectures, dependent: :destroy
   has_many :students, through: :student_lectures, source: :user
 
-
   after_commit :create_chat, on: :create
 
   def create_chat
