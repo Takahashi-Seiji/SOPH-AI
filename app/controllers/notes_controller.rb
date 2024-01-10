@@ -11,6 +11,8 @@ class NotesController < ApplicationController
 
   def update
     @note = Note.find(params[:id])
+    authorize @note, :update?
+
     if @note.update(note_params)
       redirect_to lecture_path(@note.lecture)
     end
