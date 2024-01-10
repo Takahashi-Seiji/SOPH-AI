@@ -3,6 +3,7 @@ class NotesController < ApplicationController
     @lecture = Lecture.find(params[:lecture_id])
     @note = @lecture.notes.new(note_params)
     @note.user = current_user
+    authorize @note, :create?
 
     if @note.save!
       redirect_to lecture_path(@lecture)
