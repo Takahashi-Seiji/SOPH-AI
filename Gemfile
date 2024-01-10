@@ -8,6 +8,7 @@ gem "rails", "~> 7.1.2"
 gem "cloudinary", '~> 1.22.0'
 
 gem 'pundit'
+gem "ruby-openai"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"

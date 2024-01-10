@@ -8,6 +8,7 @@ Bundler.require(*Rails.groups)
 
 module SophAi
   class Application < Rails::Application
+    include Pundit
     config.generators do |generate|
       generate.assets false
       generate.helper false

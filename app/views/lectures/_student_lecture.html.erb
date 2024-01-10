@@ -5,15 +5,36 @@
   </div>
   <div class="col-4">
     <h1>Your notes: </h1>
-    <div data-lecture-target="notes">
-      <h2>note 1 example</h2>
+    <div data-lecture-target="notes" class="notes-container">
+      <% @notes.each do |note| %>
+        <h2><%= simple_format(note.content) %></h2>
+        <% end %>
     </div>
     <button data-action="click->lecture#displayNoteForm">Take notes</button>
+    <button data-action="click->lecture#displayEditNoteForm">Edit your notes</button>
     <div class="d-none" data-lecture-target="noteForm">
       <%= simple_form_for [@lecture, Note.new], remote: true, data: {action: "submit->lecture#addNote"} do |f| %>
-        <%= f.text_field :content, as: :text, data: {lecture_target: "noteContent"} %>
+        <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"} %>
         <%= f.button :submit, "Save Note" %>
       <% end %>
     </div>
+    <div class="d-none" data-lecture-target="editNoteForm">
+      <%= simple_form_for [@lecture, @note], remote: true, data: {action: "submit->lecture#editNote"} do |f| %>
+        <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"} %>
+        <%= f.button :submit, "Update Note" %>
+      <% end %>
+    </div>
+  <div data-controller="chat" class="bg-primary">
+    <div data-chat-target="conversationDisplay">
+      <h1>Conversation here</h1>
+      <% @chat.messages.each do |message| %>
+        <p><%= message.content %></p>
+      <% end %>
+    </div>
+    <%= simple_form_for [@chat, Message.new], remote: true, data: {action: "submit->chat#message"} do |f| %>
+      <%= f.text_area :content, as: :text, data: {chat_target: "messageContent"} %>
+      <%= f.button :submit, "Send Message" %>
+    <% end %>
+  </div>
   </div>
 </div>
