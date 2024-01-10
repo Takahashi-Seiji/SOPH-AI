@@ -16,7 +16,6 @@ class LecturesController < ApplicationController
       @note = Note.new
       create_student_lecture
       @note = Note.find_or_initialize_by(user: current_user, lecture: @lecture)
-      @quiz = Quiz.find_or_initialize_by(user: current_user, lecture: @lecture)
     end
   end
 
@@ -59,8 +58,12 @@ class LecturesController < ApplicationController
   end
 
   def create_student_lecture
-    StudentLecture.create(lecture: @lecture, user: current_user)
-    flash[:notice] = "You have successfully joined the lecture!"
+    if StudentLecture.exists?(lecture: @lecture, user: current_user)
+      flash[:notice] = "You have already joined this lecture!"
+    else
+      StudentLecture.create(lecture: @lecture, user: current_user)
+      flash[:notice] = "You have successfully joined the lecture!"
+    end
   end
 
   def lecture_accessible?

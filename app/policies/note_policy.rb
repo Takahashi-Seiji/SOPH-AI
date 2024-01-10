@@ -6,6 +6,4 @@ class NotePolicy < ApplicationPolicy
   def update?
     user.student?
   end
-
-
 end
