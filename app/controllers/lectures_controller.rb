@@ -8,6 +8,7 @@ class LecturesController < ApplicationController
     redirect_to root_path unless lecture_accessible?
     @notes = @lecture.notes
     @chat = @lecture.chat || @lecture.create_chat
+    @message = Message.new
 
     @note = Note.new
     if current_user.student?
@@ -17,8 +18,8 @@ class LecturesController < ApplicationController
   end
 
   def new
+    # authorize current_user, :create_lecture?
     @lecture = Lecture.new
-    authorize current_user, :create_lecture?
   end
 
   def create

@@ -1,1 +1,13 @@
-<%= current_user.lectures %>
+<% current_user.lectures.each do |lecture| %>
+<%= link_to lecture.title, lecture_path(lecture) %>
+<%= lecture.content %>
+<br>
+<% end %>
+
+<% current_user.students.uniq.each do |student| %>
+  <%= student.first_name %>
+  <%= student.email %>
+  <% student.lectures.each do |lecture| %>
+    <%= lecture.title %>
+  <% end %>
+<% end %>
