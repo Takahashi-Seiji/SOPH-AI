@@ -1,0 +1,7 @@
+<%= simple_form_for [@lecture, @quiz] do |f| %>
+  <%= f.input :status %>
+  <%= f.simple_fields_for :questions do |q| %>
+    <%= q.input :content %>
+  <% end %>
+  <%= f.button :submit %>
+<% end %>
