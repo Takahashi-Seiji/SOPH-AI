@@ -1,1 +1,7 @@
-<%= current_user.student_lectures %>
+<% current_user.student_lectures.map(&:lecture).uniq.each do |lecture| %>
+  <%= link_to lecture.title, lecture_path(lecture) %>
+  <%= lecture.content %>
+  <br>
+<% end %>
+
+
