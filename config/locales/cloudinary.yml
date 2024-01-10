@@ -1,0 +1,6 @@
+development:
+  cloud_name: "daykmfcjy"
+  api_key: "382888464144886"
+  api_secret: "HDFXGsSw5KgidHyDIrlGTTaZW6E"
+  secure: true
+  cdn_subdomain: true

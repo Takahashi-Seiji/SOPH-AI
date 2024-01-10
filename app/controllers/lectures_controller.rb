@@ -1,16 +1,17 @@
 class LecturesController < ApplicationController
   def show
     @lecture = Lecture.find(params[:id])
-    # authorize current_user, :view_lecture?
-    # authorize current_user, :create_note?
-    # authorize current_user, :start_chat?
-    # authorize current_user, :create_quiz?
+
     redirect_to root_path unless lecture_accessible?
+    authorize current_user, :view_lecture?
+
     @notes = @lecture.notes
     @chat = @lecture.chat || @lecture.create_chat
-
-    @note = Note.new
     if current_user.student?
+      authorize current_user, :create_note?
+      authorize current_user, :start_chat?
+      authorize current_user, :create_quiz?
+      @note = Note.new
       create_student_lecture
       @note = Note.find_or_initialize_by(user: current_user, lecture: @lecture)
     end
@@ -23,6 +24,7 @@ class LecturesController < ApplicationController
 
   def create
     @lecture = Lecture.new(lecture_params)
+    authorize @lecture
     @lecture.teacher = current_user
     @lecture.shareable_link = SecureRandom.hex(10)
     if @lecture.save
