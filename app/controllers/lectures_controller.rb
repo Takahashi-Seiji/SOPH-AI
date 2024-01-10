@@ -1,6 +1,10 @@
 class LecturesController < ApplicationController
   def show
     @lecture = Lecture.find(params[:id])
+    authorize current_user, :view_lecture?
+    authorize current_user, :create_note?
+    authorize current_user, :start_chat?
+    authorize current_user, :create_quiz?
     redirect_to root_path unless lecture_accessible?
 
     @note = Note.new
@@ -12,6 +16,7 @@ class LecturesController < ApplicationController
 
   def new
     @lecture = Lecture.new
+    authorize current_user, :create_lecture?
   end
 
   def create
