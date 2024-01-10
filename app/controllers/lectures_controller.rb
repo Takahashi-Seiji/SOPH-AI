@@ -2,6 +2,7 @@ class LecturesController < ApplicationController
   def show
     @lecture = Lecture.find(params[:id])
     redirect_to root_path unless lecture_accessible?
+    @notes = @lecture.notes
 
     @note = Note.new
     if current_user.student?

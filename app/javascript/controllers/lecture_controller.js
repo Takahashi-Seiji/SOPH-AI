@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="lecture"
 export default class extends Controller {
-  static targets = ["code", "editForm", "notes", "noteForm", "noteContent"]
+  static targets = ["code", "editForm", "notes", "noteForm", "noteContent", "editNoteForm"]
 
   connect() {
     console.log("Hello, Stimulus!")
@@ -29,14 +29,16 @@ export default class extends Controller {
   }
 
   addNote(event) {
-    event.preventDefault()
-
     const note = this.notesTarget
     const noteContent = this.noteContentTarget.value
-
-
     const noteElement = document.createElement("h3")
     noteElement.innerHTML = noteContent
     note.appendChild(noteElement)
+  }
+
+  displayEditNoteForm(event) {
+    event.preventDefault()
+    const editNoteForm = this.editNoteFormTarget
+    editNoteForm.classList.toggle("d-none")
   }
 }

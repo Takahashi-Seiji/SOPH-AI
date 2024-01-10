@@ -1,13 +1,18 @@
 class NotesController < ApplicationController
   def create
     @lecture = Lecture.find(params[:lecture_id])
-    @note = Note.new(note_params)
+    @note = @lecture.notes.new(note_params)
     @note.user = current_user
 
-    if @note.save
-      respond_to do |format|
-        format.html { redirect_to lecture_path(@lecture) }
-      end
+    if @note.save!
+      redirect_to lecture_path(@lecture)
+    end
+  end
+
+  def update
+    @note = Note.find(params[:id])
+    if @note.update(note_params)
+      redirect_to lecture_path(@note.lecture)
     end
   end
 
