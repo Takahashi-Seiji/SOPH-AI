@@ -24,5 +24,17 @@
         <%= f.button :submit, "Update Note" %>
       <% end %>
     </div>
+  <div data-controller="chat" class="bg-primary">
+    <div data-chat-target="conversationDisplay">
+      <h1>Conversation here</h1>
+      <% @chat.messages.each do |message| %>
+        <p><%= message.content %></p>
+      <% end %>
+    </div>
+    <%= simple_form_for [@chat, Message.new], remote: true, data: {action: "submit->chat#message"} do |f| %>
+      <%= f.text_area :content, as: :text, data: {chat_target: "messageContent"} %>
+      <%= f.button :submit, "Send Message" %>
+    <% end %>
+  </div>
   </div>
 </div>
