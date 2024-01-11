@@ -14,7 +14,7 @@ class LecturesController < ApplicationController
   end
 
   def new
-    # authorize current_user, :create_lecture?
+    authorize current_user, :create_lecture?
     @lecture = Lecture.new
   end
 

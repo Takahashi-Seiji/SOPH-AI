@@ -1,6 +1,8 @@
 class NotesController < ApplicationController
   def create
     @lecture = Lecture.find(params[:lecture_id])
+    authorize @note, :create?
+
     @note = @lecture.notes.new(note_params)
     @note.user = current_user
     authorize @note, :create?
@@ -16,6 +18,8 @@ class NotesController < ApplicationController
 
     if @note.update(note_params)
       redirect_to lecture_path(@note.lecture)
+    else
+      render :edit
     end
   end
 
