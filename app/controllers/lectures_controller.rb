@@ -4,19 +4,12 @@ class LecturesController < ApplicationController
 
     redirect_to root_path unless lecture_accessible?
     authorize current_user, :view_lecture?
+    setup_lecture_resources
 
-    @notes = @lecture.notes
-    @chat = @lecture.chat || @lecture.create_chat
-
-    @message = Message.new
     if current_user.student?
-      authorize current_user, :create_note?
-      authorize current_user, :start_chat?
-      authorize current_user, :create_quiz?
-      @note = Note.new
+      authorize_student_actions
       create_student_lecture
-      @note = Note.find_or_initialize_by(user: current_user, lecture: @lecture)
-      @quiz = Quizz.find_or_initialize_by(student: current_user, lecture: @lecture)
+      create_or_find_note
     end
   end
 
@@ -30,9 +23,7 @@ class LecturesController < ApplicationController
     authorize @lecture
     @lecture.teacher = current_user
     @lecture.shareable_link = SecureRandom.hex(10)
-    if @lecture.save
-      redirect_to lecture_path(@lecture)
-    end
+    redirect_to lecture_path(@lecture) if @lecture.save
   end
 
   def edit
@@ -41,9 +32,7 @@ class LecturesController < ApplicationController
 
   def update
     @lecture = Lecture.find(params[:id])
-    if @lecture.update(lecture_params)
-      redirect_to lecture_path(@lecture)
-    end
+    redirect_to lecture_path(@lecture) if @lecture.update(lecture_params)
   end
 
   def destroy
@@ -59,8 +48,28 @@ class LecturesController < ApplicationController
   end
 
   def create_student_lecture
-    StudentLecture.create(lecture: @lecture, user: current_user)
-    flash[:notice] = "You have successfully joined the lecture!"
+    if StudentLecture.exists?(lecture: @lecture, user: current_user)
+      flash[:notice] = "You have already joined this lecture!"
+    else
+      StudentLecture.create(lecture: @lecture, user: current_user)
+      flash[:notice] = "You have successfully joined the lecture!"
+    end
+  end
+
+  def create_or_find_note
+    @note = Note.find_by(lecture: @lecture, user: current_user)
+  end
+
+  def setup_lecture_resources
+    @notes = @lecture.notes
+    @chat = @lecture.chat || @lecture.create_chat
+    @message = Message.new
+  end
+
+  def authorize_student_actions
+    authorize current_user, :create_note?
+    authorize current_user, :start_chat?
+    authorize current_user, :create_quiz?
   end
 
   def lecture_accessible?
