@@ -17,13 +17,12 @@ class Gpt4Service
     response = @client.chat(
       parameters: {
         model: "gpt-4",
-        messages: [{ role: "user", content: prompt}],
+        messages: [{ role: "user", content: prompt }],
         temperature: 0.9
-        })
-
+      })
 
     response.dig("choices", 0, "message", "content")
-    quizz_data = parse_quiz_data(response)
+    quizz_data = parse_quiz_data(response, lecture)
   end
 
   private
@@ -51,13 +50,11 @@ class Gpt4Service
     }
   end
 
-  def parse_quiz_data(response)
-    parsed_data = JSON.parse(response)
-    raise
-    quizz = Quizz.create!(lecture: lecture)
-    quizz_data.each do |question|
-      question = Question.create!(content: question["question"], lecture: lecture)
-      question.answers.create!(content: question["answer"], correct: true)
-    end
+  def parse_quiz_data(response, lecture)
+  quizz = Quizz.create!(lecture: lecture)
+  response.each do |question|
+    created_question = Question.create!(content: question["question"], lecture: lecture)
+    created_question.answers.create!(content: question["answer"], correct: true)
   end
+end
 end

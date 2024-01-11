@@ -43,7 +43,7 @@ class QuizzesController < ApplicationController
   private
 
   def create_gpt_quizz
-    quizz = gpt4_service.create_quizz(@lecture, @quiz)
+    quizz = gpt4_service.create_quizz(@lecture)
     # Use variable quizz to add it to student or lecture, whatever you need.
     # current_user.quizzes.create(lecture: @lecture, status: 'created')
   end
