@@ -68,7 +68,7 @@ class LecturesController < ApplicationController
 
   def authorize_student_actions
     authorize current_user, :create_note?
-    authorze current_user, :start_chat?
+    authorize current_user, :start_chat?
     authorize current_user, :create_quiz?
   end
 
