@@ -1,6 +1,7 @@
-class QuizPolicy < ApplicationPolicy
+class QuizzPolicy < ApplicationPolicy
   def create?
     user.student?
+  end
 
   def update?
     user.student?

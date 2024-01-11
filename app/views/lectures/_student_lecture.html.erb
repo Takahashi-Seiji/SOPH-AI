@@ -9,7 +9,7 @@
       <%= render 'student_quiz' %>
     <% end %>
   <% end %>
-  <%= button_to 'Generate real Quiz', lecture_quizzes_path(@lecture), method: :post, data: { action: 'click->lecture#toggleQuiz' } %>
+  <%= button_to 'Generate real Quiz', lecture_quizzes_path(@lecture), data: {turbo_method: :post} %>
 
   <div class="col-4">
     <h1>Your notes: </h1>
@@ -27,7 +27,7 @@
       <% end %>
     </div>
     <div class="d-none" data-lecture-target="editNoteForm">
-      <%= simple_form_for [@lecture, @note], remote: true, data: {action: "submit->lecture#editNote"} do |f| %>
+      <%= simple_form_for [@lecture, Note.new], remote: true, data: {action: "submit->lecture#editNote"} do |f| %>
         <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"} %>
         <%= f.button :submit, "Update Note" %>
       <% end %>

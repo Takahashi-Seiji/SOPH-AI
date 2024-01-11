@@ -1,20 +1,12 @@
 class QuizzesController < ApplicationController
-  before_action :set_quiz, only: [:show, :edit, :update]
+  before_action :set_quiz, only: [:show,:update]
 
   def create
     @lecture = Lecture.find(params[:lecture_id])
-    @quiz = Quizz.new(quiz_params)
-    @quiz.user = current_user
-    @quiz.lecture = @lecture
-    raise
-
+    @quiz = Quizz.new(lecture: @lecture, status: 'draft')
     authorize @quiz, :create?
 
-    if @quiz.save
-      redirect_to @quiz, notice: 'Quiz was successfully generated.'
-    else
-      render :new
-    end
+    create_gpt_quizz
   end
 
   def show
@@ -35,8 +27,6 @@ class QuizzesController < ApplicationController
     authorize @quiz, :create?
   end
 
-
-
   def update
     if @quiz.update(quiz_params)
       if params[:commit] == 'Submit Quiz'
@@ -51,6 +41,17 @@ class QuizzesController < ApplicationController
   end
 
   private
+
+  def create_gpt_quizz
+    quizz = gpt4_service.create_quizz(@lecture, @quiz)
+    # Use variable quizz to add it to student or lecture, whatever you need.
+    # current_user.quizzes.create(lecture: @lecture, status: 'created')
+  end
+
+  def gpt4_service
+    client = OpenAI::Client.new
+    @gpt4_service ||= Gpt4Service.new(client)
+  end
 
   def set_quiz
     @quiz = Quizz.find(params[:id])
