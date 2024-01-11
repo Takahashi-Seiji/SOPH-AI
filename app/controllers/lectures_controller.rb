@@ -23,7 +23,11 @@ class LecturesController < ApplicationController
     authorize @lecture
     @lecture.teacher = current_user
     @lecture.shareable_link = SecureRandom.hex(10)
-    redirect_to lecture_path(@lecture) if @lecture.save
+    if @lecture.save
+      summary = LectureSummaryService.new(@lecture).call
+      @lecture.update!(summary: summary)
+      redirect_to lecture_path(@lecture)
+    end
   end
 
   def edit
@@ -32,6 +36,7 @@ class LecturesController < ApplicationController
 
   def update
     @lecture = Lecture.find(params[:id])
+    authorize @lecture
     redirect_to lecture_path(@lecture) if @lecture.update(lecture_params)
   end
 
@@ -44,7 +49,7 @@ class LecturesController < ApplicationController
   private
 
   def lecture_params
-    params.require(:lecture).permit(:title, :content, photos: [])
+    params.require(:lecture).permit(:title, :summary, :content, {photos: []}, :file)
   end
 
   def create_student_lecture
