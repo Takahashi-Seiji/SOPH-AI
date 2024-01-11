@@ -51,13 +51,14 @@ class Gpt4Service
     }
   end
 
-  def parse_quiz_data(response)
-    parsed_data = JSON.parse(response)
-    raise
-    quizz = Quizz.create!(lecture: lecture)
-    quizz_data.each do |question|
-      question = Question.create!(content: question["question"], lecture: lecture)
-      question.answers.create!(content: question["answer"], correct: true)
+  def parse_quiz_data(response, lecture)
+    quiz_data = response["choices"][0]["message"]["content"]
+    quiz_content = Quizz.create!(lecture: lecture)
+    quiz_data.each do |question_data|
+      question = Question.create!(content: question_data["question"], lecture: lecture)
+      question_data["choices"].each do |choice|
+        question.answers.create!(content: choice["label"], correct: choice["value"] == question_data["correct_answer"])
+      end
     end
   end
 end
