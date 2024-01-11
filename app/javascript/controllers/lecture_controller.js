@@ -1,13 +1,15 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="lecture"
 export default class extends Controller {
-  static targets = ["code", "editForm", "notes", "noteForm", "noteContent", "editNoteForm"]
+  static targets = [ "quizContainer", "fakeQuizContainer", "code", "editForm", "notes", "noteForm", "noteContent", "editNoteForm"]
 
   connect() {
     console.log("Hello, Stimulus!")
+  }
 
-
+  toggleQuiz() {
+    console.log("Hello, Stimulus!");
+    this.fakeQuizContainerTarget.classList.toggle("d-none")
   }
 
   displayCode(event) {

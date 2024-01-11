@@ -1,7 +1,24 @@
-<%= simple_form_for [@lecture, @quiz] do |f| %>
-  <%= f.input :status %>
-  <%= f.simple_fields_for :questions do |q| %>
-    <%= q.input :content %>
-  <% end %>
-  <%= f.button :submit %>
-<% end %>
+<div class="quiz">
+  <h2>Fake Quiz</h2>
+  <p>This is a fake quiz for testing purposes.</p>
+
+  <div class="quiz-container">
+    <%= form_with(url: "#", local: true) do |form| %>
+      <div>
+        <p>Question 1: What is the capital of France?</p>
+        <%= radio_button_tag :question1, "Paris" %> Paris<br>
+        <%= radio_button_tag :question1, "London" %> London<br>
+        <%= radio_button_tag :question1, "Berlin" %> Berlin<br>
+      </div>
+
+      <div>
+        <p>Question 2: What is 2 + 2?</p>
+        <%= radio_button_tag :question2, "2" %> 2<br>
+        <%= radio_button_tag :question2, "4" %> 4<br>
+        <%= radio_button_tag :question2, "6" %> 6<br>
+      </div>
+
+      <%= form.submit 'Submit Quiz' %>
+    <% end %>
+  </div>
+</div>

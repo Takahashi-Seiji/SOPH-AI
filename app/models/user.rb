@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   # STUDENT
   has_many :student_lectures
-  has_many :quizzes, dependent: :destroy
+  has_many :quizzs, foreign_key: "user_id", dependent: :destroy
   has_many :notes, dependent: :destroy
 
 

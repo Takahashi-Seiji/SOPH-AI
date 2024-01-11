@@ -13,4 +13,8 @@ class Lecture < ApplicationRecord
   def create_chat
     Chat.create(lecture: self)
   end
+
+  def quiz_for_student(user)
+    quizzes.where(student: user).last
+  end
 end

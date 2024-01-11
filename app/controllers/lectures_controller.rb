@@ -16,12 +16,12 @@ class LecturesController < ApplicationController
       @note = Note.new
       create_student_lecture
       @note = Note.find_or_initialize_by(user: current_user, lecture: @lecture)
-      @quiz = Quiz.find_or_initialize_by(user: current_user, lecture: @lecture)
+      @quiz = Quizz.find_or_initialize_by(student: current_user, lecture: @lecture)
     end
   end
 
   def new
-    # authorize current_user, :create_lecture?
+    authorize current_user, :create_lecture?
     @lecture = Lecture.new
   end
 

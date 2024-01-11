@@ -1,22 +1,41 @@
 class QuizzesController < ApplicationController
   before_action :set_quiz, only: [:show, :edit, :update]
+
+  def create
+    @lecture = Lecture.find(params[:lecture_id])
+    @quiz = Quizz.new(quiz_params)
+    @quiz.user = current_user
+    @quiz.lecture = @lecture
+    raise
+
+    authorize @quiz, :create?
+
+    if @quiz.save
+      redirect_to @quiz, notice: 'Quiz was successfully generated.'
+    else
+      render :new
+    end
+  end
+
   def show
-    @quiz = Quiz.find(params[:id])
+    @quiz = Quizz.find(params[:id])
     authorize @quiz, :view_submitted_quizzes?
 
     @questions = @quiz.questions
     @student = User.find(params[:student_id])
     @submitted_quizzes = @student.quizzes.where(status: 'submitted')
 
-    @scores = @submitted_quizzes.map { |quiz| calculate_score(quiz) }
+    @grades = @submitted_quizzes.map { |quiz| calculate_score(quiz) }
 
-    @average_score = @scores.sum / @scores.size.to_f
+    @average_score = @grades.sum / @grades.size.to_f
   end
 
   def new
-    @quiz = Quiz.new
+    @quiz = Quizz.new
     authorize @quiz, :create?
   end
+
+
 
   def update
     if @quiz.update(quiz_params)
@@ -34,10 +53,10 @@ class QuizzesController < ApplicationController
   private
 
   def set_quiz
-    @quiz = Quiz.find(params[:id])
+    @quiz = Quizz.find(params[:id])
   end
 
   def quiz_params
-    params.require(:quiz).permit(:status)
+    params.require(:quiz).permit(:status, :grade)
   end
 end

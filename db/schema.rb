@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_10_171007) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_10_235150) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,7 +99,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_10_171007) do
     t.datetime "updated_at", null: false
     t.integer "status"
     t.integer "grade"
+    t.bigint "user_id", null: false
     t.index ["lecture_id"], name: "index_quizzs_on_lecture_id"
+    t.index ["user_id"], name: "index_quizzs_on_user_id"
   end
 
   create_table "student_lectures", force: :cascade do |t|
@@ -138,6 +140,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_10_171007) do
   add_foreign_key "notes", "users"
   add_foreign_key "questions", "quizzs"
   add_foreign_key "quizzs", "lectures"
+  add_foreign_key "quizzs", "users"
   add_foreign_key "student_lectures", "lectures"
   add_foreign_key "student_lectures", "users"
 end
