@@ -9,6 +9,8 @@ gem "cloudinary", '~> 1.22.0'
 
 gem 'pundit'
 gem "ruby-openai"
+gem "sidekiq"
+gem "sidekiq-failures", "~> 1.0"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"

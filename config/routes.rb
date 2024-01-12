@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   resources :lectures do
     resources :quizzes, only: [:create, :update, :destroy]
     resources :notes
-    resources :chats, only: [:create, :update, :destroy]
+    resources :chats, only: [:create, :update, :destroy] do
+      resources :messages, only: [:create]
+    end
   end
 
   resources :messages, only: [:create]
@@ -20,5 +22,4 @@ Rails.application.routes.draw do
   resources :chats do
     resources :messages, only: [:create]
   end
-
 end
