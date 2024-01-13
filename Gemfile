@@ -11,6 +11,8 @@ gem 'pundit'
 gem "ruby-openai"
 gem "sidekiq"
 gem "sidekiq-failures", "~> 1.0"
+gem 'yomu'
+gem 'pdf-reader'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
