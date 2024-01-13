@@ -3,23 +3,21 @@ class QuizzesController < ApplicationController
 
   def create
     @lecture = Lecture.find(params[:lecture_id])
-    @quiz = Quizz.new(lecture: @lecture, status: 'draft')
+    @quiz = Quizz.new(student: current_user, lecture: @lecture, status: 'draft')
     authorize @quiz, :create?
-
     create_gpt_quizz
   end
 
   def show
     @quiz = Quizz.find(params[:id])
-    authorize @quiz, :view_submitted_quizzes?
+    authorize @quiz, :show?
 
-    @questions = @quiz.questions
-    @student = User.find(params[:student_id])
-    @submitted_quizzes = @student.quizzes.where(status: 'submitted')
-
-    @grades = @submitted_quizzes.map { |quiz| calculate_score(quiz) }
-
-    @average_score = @grades.sum / @grades.size.to_f
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(dom_id(@quiz), partial: "lectures/student_quiz", locals: { quiz: @quiz })
+      end
+      format.html { render partial: "lectures/student_quiz", locals: { quiz: @quiz } }
+    end
   end
 
   def new
@@ -28,24 +26,52 @@ class QuizzesController < ApplicationController
   end
 
   def update
-    if @quiz.update(quiz_params)
-      if params[:commit] == 'Submit Quiz'
-        @quiz.submitted!
-        @quiz.score = @quiz.calculate_score
-        @quiz.save
+    @quiz = Quizz.find(params[:id])
+    authorize @quiz, :update?
+    return submit_quiz if params["submit_quiz"]
+
+    if submitted || @quiz.update(quiz_params)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(dom_id(@quiz), partial: "lectures/results", locals: { quiz: @quiz })
+        end
+        format.html { redirect_to lecture_path(@quiz.lecture) }
       end
-      redirect_to @quiz, notice: 'Quiz was successfully updated.'
     else
-      render :edit
+      respond_to do |format|
+        format.turbo_stream do
+          flash.now[:alert] = "Quiz could not be submitted, there was an error"
+          render turbo_stream: turbo_stream.replace(dom_id(@quiz), partial: "lectures/student_quiz", locals: { quiz: @quiz })
+        end
+        format.html { render :edit }
+      end
     end
   end
+
+
 
   private
 
   def create_gpt_quizz
-    quizz = gpt4_service.create_quizz(@lecture)
-    # Use variable quizz to add it to student or lecture, whatever you need.
-    # current_user.quizzes.create(lecture: @lecture, status: 'created')
+    service_response = gpt4_service.create_quizz(@lecture, @quiz)
+    if service_response[:status] == 'success'
+      @quiz.update!(status: 'created')
+    else
+      flash[:alert] = service_response[:message]
+    end
+    redirect_to lecture_path(@lecture)
+  end
+
+  def submit_quiz
+    global_score = 0
+    @quiz.questions.each do |question|
+      answer = submit_quiz_params[question.id.to_s]
+      question.update!(answer: answer)
+      global_score += 1 if question.answer == question.correct_answer
+    end
+    grade = (global_score / @quiz.questions.count.to_f) * 10
+    @quiz.update!(status: 'submitted', grade: grade)
+    render turbo_stream: turbo_stream.replace("quizz", partial: "lectures/results", locals: { quiz: @quiz, lecture: @quiz.lecture, correct_answers: global_score })
   end
 
   def gpt4_service
@@ -59,5 +85,10 @@ class QuizzesController < ApplicationController
 
   def quiz_params
     params.require(:quiz).permit(:status, :grade)
+  end
+
+  def submit_quiz_params
+    quiz_question_ids = @quiz.questions.map { |question| question.id.to_s }
+    params.require(:answers).permit(quiz_question_ids)
   end
 end

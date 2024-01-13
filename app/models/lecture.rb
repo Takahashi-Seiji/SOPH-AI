@@ -16,6 +16,6 @@ class Lecture < ApplicationRecord
   end
 
   def quiz_for_student(user)
-    quizzes.where(student: user).last
+    quizzes.where(student: user)&.last
   end
 end

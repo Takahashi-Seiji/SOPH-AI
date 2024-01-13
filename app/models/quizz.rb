@@ -12,4 +12,8 @@ class Quizz < ApplicationRecord
 
     correct_answers.to_f / total_questions * 100
   end
+
+  def correct_answers
+    questions.where(correct: true).count
+  end
 end
