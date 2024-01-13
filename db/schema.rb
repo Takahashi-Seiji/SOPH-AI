@@ -76,7 +76,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_231410) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "content"
+    t.bigint "user_id", null: false
+    t.integer "role"
     t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "notes", force: :cascade do |t|
@@ -142,6 +145,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_231410) do
   add_foreign_key "chats", "lectures"
   add_foreign_key "lectures", "users"
   add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "users"
   add_foreign_key "notes", "lectures"
   add_foreign_key "notes", "users"
   add_foreign_key "questions", "quizzs"

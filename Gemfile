@@ -9,6 +9,8 @@ gem "cloudinary", '~> 1.22.0'
 
 gem 'pundit'
 gem "ruby-openai"
+gem "sidekiq"
+gem "sidekiq-failures", "~> 1.0"
 gem 'yomu'
 gem 'pdf-reader'
 

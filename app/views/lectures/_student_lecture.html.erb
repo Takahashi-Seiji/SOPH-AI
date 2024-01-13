@@ -31,19 +31,22 @@
       <% end %>
     </div>
     <div class="d-none" data-lecture-target="editNoteForm">
-      <%= simple_form_for [@lecture, Note.new], remote: true, data: {action: "submit->lecture#editNote"} do |f| %>
+      <%= simple_form_for [@lecture, @note], remote: true, data: {action: "submit->lecture#editNote"} do |f| %>
         <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"} %>
         <%= f.button :submit, "Update Note" %>
       <% end %>
     </div>
+
+
+
   <div data-controller="chat" class="bg-primary">
     <div data-chat-target="conversationDisplay">
       <h1>Conversation here</h1>
-      <% @chat.messages.each do |message| %>
-        <p><%= message.content %></p>
+      <%= turbo_frame_tag "messages" do %>
+        <%= render 'chat' %>
       <% end %>
     </div>
-    <%= simple_form_for [@chat, Message.new], remote: true, data: {action: "submit->chat#message"} do |f| %>
+    <%= simple_form_for [@lecture, @chat, Message.new], remote: true, data: {action: "submit->chat#message", "chat_chat_id": @chat.id} do |f| %>
       <%= f.text_area :content, as: :text, data: {chat_target: "messageContent"} %>
       <%= f.button :submit, "Send Message" %>
     <% end %>
