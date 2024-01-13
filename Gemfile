@@ -9,6 +9,8 @@ gem "cloudinary", '~> 1.22.0'
 
 gem 'pundit'
 gem "ruby-openai"
+gem 'yomu'
+gem 'pdf-reader'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"

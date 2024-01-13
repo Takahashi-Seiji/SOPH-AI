@@ -67,6 +67,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_12_231410) do
     t.integer "lecture_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "summary"
     t.index ["user_id"], name: "index_lectures_on_user_id"
   end
 
