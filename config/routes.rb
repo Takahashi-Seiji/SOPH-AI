@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get "welcome" => "pages#welcome", as: :welcome
 
   resources :lectures do
-    resources :quizzes, only: [:create, :update, :destroy]
+    resources :quizzes, only: [:create, :update, :destroy, :show]
     resources :notes
     resources :chats, only: [:create, :update, :destroy]
   end
