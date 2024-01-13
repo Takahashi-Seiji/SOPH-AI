@@ -53,7 +53,7 @@ class QuizzesController < ApplicationController
   private
 
   def create_gpt_quizz
-    service_response = gpt4_service.create_quizz(@lecture, @quiz)
+    service_response = quiz_service.create_quizz(@lecture, @quiz)
     if service_response[:status] == 'success'
       @quiz.update!(status: 'created')
     else
@@ -74,9 +74,8 @@ class QuizzesController < ApplicationController
     render turbo_stream: turbo_stream.replace("quizz", partial: "lectures/results", locals: { quiz: @quiz, lecture: @quiz.lecture, correct_answers: global_score })
   end
 
-  def gpt4_service
-    client = OpenAI::Client.new
-    @gpt4_service ||= Gpt4Service.new(client)
+  def quiz_service
+    @quiz_service ||= CreateQuizService.new(@lecture)
   end
 
   def set_quiz
