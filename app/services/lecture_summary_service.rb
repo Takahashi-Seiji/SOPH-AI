@@ -25,12 +25,12 @@ class LectureSummaryService < Gpt4Service
  def generate_text
     user_content = "You are a great teacher, so please summarize the following text, being concise and clear, do not change the information, just summarize it for your students:" + @lecture.content
 
-    file_blob = @lecture.file.blob
-    tmpfile = file_blob.open(tmpdir: Rails.root.join("tmp"), &:read)
-    file_blob.open(tmpdir: Rails.root.join("tmp"), &:read)
-    reader = PDF::Reader.new(StringIO.new(file))
-    reader.pages.each do |page|
-      puts page.text
-    end
+    # file_blob = @lecture.file.blob
+    # tmpfile = file_blob.open(tmpdir: Rails.root.join("tmp"), &:read)
+    # file_blob.open(tmpdir: Rails.root.join("tmp"), &:read)
+    # reader = PDF::Reader.new(StringIO.new(file))
+    # reader.pages.each do |page|
+    #   puts page.text
+    # end
  end
 end
