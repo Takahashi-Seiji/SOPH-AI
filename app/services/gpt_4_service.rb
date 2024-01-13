@@ -5,25 +5,36 @@ class Gpt4Service
     @client = client
   end
 
-  def create_quizz(lecture)
+  def create_quizz(lecture, quizz)
     prompt = "You are a teacher, and you want to create a personalized multiple choice quiz for each of your students.
-    Based on the student average score: #{build_score}, and based on the content and context of this lecture: #{build_quizz_data(lecture)}.
+    The quiz should not be easy, quite the contrary it should be hard but not impossible.
+    Based on the content and context of this lecture: #{build_quizz_data(lecture)}.
     you are going to generate a quiz with 10 questions, and 4 possible answers for each question.
     With only one correct answer per question. Not two, not three, but one correct answer per question.
     For the answer - question format of the quiz, you are going to Use the following hash format: #{quizz_hash_format}.
     Note that this hash format is only meant to be used as a template, and you can change it as you see fit.
-    Questions should be as precise, concise and clear as possible"
+    Do not add any other initial text to the result, it must be the hash format only.
+    We will use JSON.parse to parse the result, so make sure it is a valid JSON.
+    Questions should be as precise, concise and clear as possible and options mentioned should be relevant to the
+    question while also being as different from each other as possible and do not repeat options from one question
+    to another."
 
-    response = @client.chat(
-      parameters: {
-        model: "gpt-4",
-        messages: [{ role: "user", content: prompt}],
-        temperature: 0.9
-        })
+    begin
+      response = @client.chat(
+        parameters: {
+          model: "gpt-4",
+          messages: [{ role: "user", content: prompt}],
+          temperature: 0.9
+          })
 
-
-    response.dig("choices", 0, "message", "content")
-    quizz_data = parse_quiz_data(response)
+      return response if response["choices"].blank?
+      response_content = response.dig("choices", 0, "message", "content")
+      parsed_content = JSON.parse(response_content)
+      parse_quiz_data(parsed_content, lecture, quizz)
+      return { status: 'success', message: 'Quiz created successfully', quiz: quizz }
+    rescue => e
+      return { status: 'error', message: e.message }
+    end
   end
 
   private
@@ -40,6 +51,7 @@ class Gpt4Service
   end
 
   def quizz_hash_format
+    # [{"question"=>"¿Quién presidió la década de los '20 en los Estados Unidos?", "correct_answer"=>"B", "choices"=>[{"label"=>"Franklin D. Roosevelt", "value"=>"A"}, {"label"=>"Warren G. Harding", "value"=>"B"}, {"label"=>"Herbert Hoover", "value"=>"C"}, {"label"=>"John F. Kennedy", "value"=>"D"}]}, {"question"=>"¿Qué gran evento criminal sucedió en 1932?", "correct_answer"=>"A", "choices"=>[{"label"=>"El secuestro de Lindbergh", "value"=>"A"}, {"label"=>"El asesinato de Kennedy", "value"=>"B"}, {"label"=>"La masacre de San Valentín", "value"=>"C"}, {"label"=>"El asalto a Alcatraz", "value"=>"D"}]}, {"question"=>"¿Cuál es la década conocida como la 'Época Dorada del Crimen' en la historia de Estados Unidos?", "correct_answer"=>"C", "choices"=>[{"label"=>"1920s", "value"=>"A"}, {"label"=>"1940s", "value"=>"B"}, {"label"=>"1930s", "value"=>"C"}, {"label"=>"1950s", "value"=>"D"}]}]
     {
       "question": "What is the capital of France?",
       "correct_answer": "C",
@@ -51,13 +63,13 @@ class Gpt4Service
     }
   end
 
-  def parse_quiz_data(response, lecture)
-    quiz_data = response["choices"][0]["message"]["content"]
-    quiz_content = Quizz.create!(lecture: lecture)
-    quiz_data.each do |question_data|
-      question = Question.create!(content: question_data["question"], lecture: lecture)
+  def parse_quiz_data(content, lecture, quizz)
+    content.each do |question_data|
+      question_text = question_data["question"]
+      correct_answer = question_data["correct_answer"]
+      question = Question.create!(quizz: quizz, title: question_text, correct_answer: correct_answer)
       question_data["choices"].each do |choice|
-        question.answers.create!(content: choice["label"], correct: choice["value"] == question_data["correct_answer"])
+        question.answers.create!(value: choice["value"], content: choice["label"])
       end
     end
   end
