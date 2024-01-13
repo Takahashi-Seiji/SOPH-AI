@@ -44,6 +44,7 @@ class LecturesController < ApplicationController
     @lecture = Lecture.find(params[:id])
     @lecture.destroy
     redirect_to dashboard_path
+    authorize @lecture
   end
 
   private
@@ -62,7 +63,7 @@ class LecturesController < ApplicationController
   end
 
   def create_or_find_note
-    @note = Note.find_by(lecture: @lecture, user: current_user)
+    @note = Note.find_or_initialize_by(lecture: @lecture, user: current_user)
   end
 
   def setup_lecture_resources
