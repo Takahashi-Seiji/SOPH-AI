@@ -53,7 +53,7 @@ class QuizzesController < ApplicationController
   private
 
   def create_gpt_quizz
-    service_response = quiz_service.create_quizz(@lecture, @quiz)
+    service_response = quiz_service.call(@lecture, @quiz)
     if service_response[:status] == 'success'
       @quiz.update!(status: 'created')
     else
@@ -75,7 +75,7 @@ class QuizzesController < ApplicationController
   end
 
   def quiz_service
-    @quiz_service ||= CreateQuizService.new(@lecture)
+    @quiz_service ||= CreateQuizService.new(@lecture, @message)
   end
 
   def set_quiz

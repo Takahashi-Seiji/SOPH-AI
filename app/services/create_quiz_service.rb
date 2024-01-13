@@ -1,5 +1,5 @@
 class CreateQuizService < Gpt4Service
-  def call
+  def call(lecture, quizz)
     prompt = "You are a teacher, and you want to create a personalized multiple choice quiz for each of your students.
     The quiz should not be easy, quite the contrary it should be hard but not impossible.
     Based on the content and context of this lecture: #{build_quizz_data(lecture)}.
@@ -39,7 +39,7 @@ class CreateQuizService < Gpt4Service
 
   def build_quizz_data(lecture)
     final_data = []
-    final_data << lecture.content
+    final_data << lecture.summary
     final_data << lecture.title
     final_data.join(" ")
   end
