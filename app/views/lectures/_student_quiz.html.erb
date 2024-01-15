@@ -3,10 +3,14 @@
     <% @quiz = @lecture.quiz_for_student(current_user) %>
     <% quizz_questions = @quiz.questions %>
 
+    <% previous_quizzes_count = @lecture.quizzes.where('created_at < ?', @quiz.created_at).where(user_id: current_user).count %>
+    <p><%= previous_quizzes_count %>/3 quizzes submitted.</p>
+
+
     <% if @quiz.submitted? %>
       <div class="alert alert-info">
         You have already submitted this quiz.
-        <%= @quiz.grades %>
+        <%= @quiz.grade %>
       </div>
     <% else %>
       <%= form_with url: lecture_quiz_path(@lecture, @quiz, submit_quiz: true), method: :patch do |form| %>

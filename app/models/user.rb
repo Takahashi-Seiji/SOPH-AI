@@ -16,7 +16,6 @@ class User < ApplicationRecord
   has_many :notes, dependent: :destroy
   has_many :lectures_joined_as_student, through: :student_lectures, source: :lecture
 
-
   def teacher?
     role == "teacher"
   end

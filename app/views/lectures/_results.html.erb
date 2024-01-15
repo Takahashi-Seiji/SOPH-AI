@@ -5,15 +5,19 @@
   </div>
 
   <div>
-    <h2></h2>
+    <p>Quizzes submitted: <%= @student_lecture.quiz_submissions_count %>/5Quizzes submitted: 2/3</p>
+    <h3> </h3>
+    <div>
+      <%= " 📝" * 10 %>
+    </div>
     <ul>
       <% quiz.questions.each do |question| %>
         <li>
           <%= question.title %>
           <% if question.correct? %>
-            <span>✅</span>
+            <span>✅: <%= question.correct_answer_value %> - <%= question.correct_answer_label %></span>
           <% else %>
-            <span>❌</span>
+            <span>❌ Correct answer: <%= question.correct_answer_value %> - <%= question.correct_answer_label %></span>
           <% end %>
         </li>
       <% end %>
