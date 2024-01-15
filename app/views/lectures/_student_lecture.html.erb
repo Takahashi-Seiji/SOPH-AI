@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-8 p-5 lecture-summary" style="min-height: 100vh;">
-    <h1 id="lecture-title", class="mb-4 text-center"><%= @lecture.title %></h1>
+    <h1 id="lecture-title", class="mb-4 text-center" style="text-decoration: underline";><%= @lecture.title %></h1>
     <h2 id="lecture-content"><%= simple_format(@lecture.summary) %></h2>
   </div>
 
@@ -24,7 +24,7 @@
       </div>
       <div class="d-none" data-lecture-target="editNoteForm">
         <%= simple_form_for [@lecture, @note], remote: true, data: {action: "submit->lecture#editNote"} do |f| %>
-          <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"}, class:"note-input" %>
+          <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"}, class:"note-input mt-3" %>
           <%= f.button :submit, "Update Note" %>
         <% end %>
       </div>
