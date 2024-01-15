@@ -23,10 +23,13 @@ class LecturesController < ApplicationController
     authorize @lecture
     @lecture.teacher = current_user
     @lecture.shareable_link = SecureRandom.hex(10)
-    if @lecture.save
-      summary = LectureSummaryService.new(@lecture).call
-      @lecture.update!(summary: summary)
-      redirect_to lecture_path(@lecture)
+
+    respond_to do |format|
+      if @lecture.save
+        summary = handle_openai_content_generation(@lecture.file) if @lecture.file.attached?
+        @lecture.update!(summary: summary)
+        format.html { redirect_to lecture_path(@lecture) }
+      end
     end
   end
 
@@ -80,5 +83,31 @@ class LecturesController < ApplicationController
 
   def lecture_accessible?
     @lecture.teacher == current_user || @lecture.shareable_link == params[:code] || @lecture.students.include?(current_user)
+  end
+
+  def file_exists?(attached_file)
+    attached_file.attachment&.blob && attached_file.attachment.blob.service.exist?(attached_file.attachment.key)
+  end
+
+  def retrieve_pdf_text_content(attached_file)
+    file_path = Rails.root.join("tmp", attached_file.filename.to_s)
+    File.binwrite(file_path, attached_file.download)
+    reader = PDF::Reader.new(file_path)
+    pdf_text_content = reader.pages.first(5).map(&:text).join("\n")
+    File.delete(file_path) if File.exist?(file_path)
+    pdf_text_content
+  end
+
+  def handle_openai_content_generation(attached_file)
+    if file_exists?(attached_file)
+      pdf_text_content = retrieve_pdf_text_content(attached_file)
+      openai_request = openai_request(pdf_text_content)
+    else
+      Rails.logger.info("File does not exist")
+    end
+  end
+
+  def openai_request(pdf_text_content)
+    summary = LectureSummaryService.new(@lecture, pdf_text_content).call
   end
 end

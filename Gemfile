@@ -13,6 +13,7 @@ gem "sidekiq"
 gem "sidekiq-failures", "~> 1.0"
 gem 'yomu'
 gem 'pdf-reader'
+gem 'track_progress', git: 'https://github.com/daniel-enqz/track_progress.git'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -77,6 +78,7 @@ group :development do
   # gem "spring"
 
   gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
+  gem "pry-byebug"
 end
 
 group :test do

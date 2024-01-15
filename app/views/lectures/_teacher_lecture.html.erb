@@ -1,6 +1,12 @@
-<div>
-  <div class="bg-primary">
-    <h1 id="lecture-title"><%= @lecture.title %></h1>
+<div class="container p-5">
+  <div class="d-flex justify-content-center align-items-center mb-4">
+    <% if current_user.teacher? %>
+      <%= render "shareable_link", lecture: @lecture %>
+    <% end %>
+    <%= link_to "Delete this lecture", lecture_path(@lecture), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "button text-decoration-none ms-5" %>
+  </div>
+  <div class="teacher-lecture-summary mb-3">
+    <h1 id="lecture-title" class="text-center"><%= @lecture.title %></h1>
     <h2 id="lecture-content">
       <% if lecture.summary.present? %>
         <%= simple_format(@lecture.summary) %>
@@ -9,14 +15,8 @@
       <% end %>
     </h2>
   </div>
-  <div class="bg-danger">
-    <% if current_user.teacher? %>
-      <%= render 'shareable_link', lecture: @lecture %>
-    <% end %>
-  </div>
-  <%= link_to "Edit lecture", '#', data: {action: "click->lecture#displayEditForm"} %>
-  <%= link_to "Delete this lecture", lecture_path(@lecture), data: { turbo_method: :delete, turbo_confirm: 'Are you Sure' } %>
-  <div class="d-none" data-lecture-target="editForm">
+  <%= link_to "Edit lecture", '#', data: {action: "click->lecture#displayEditForm"}, class:"button text-decoration-none" %>
+  <div class="d-none mt-5" data-lecture-target="editForm">
     <%= simple_form_for lecture, remote: true do |f| %>
       <%= f.input :title %>
       <%= f.text_area :summary, as: :text %>
