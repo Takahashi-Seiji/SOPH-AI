@@ -1,7 +1,7 @@
 <h1>Teacher's lectures</h1>
 <% current_user.lectures.each do |lecture| %>
 <%= link_to lecture.title, lecture_path(lecture) %>
-<%= lecture.content %>
+<%= lecture.summary %>
 <br>
 <% end %>
 <h1>Teacher's students</h1>

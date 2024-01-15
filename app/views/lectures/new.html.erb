@@ -1,8 +1,10 @@
-<h1>Generate lecture</h1>
-
-<%= simple_form_for @lecture do |f| %>
-  <%= f.input :title %>
-  <%= f.input :content %>
-  <%= f.input :file, as: :file %>
-  <%= f.button :submit %>
-<% end %>
+<h1 class="text-center mb-4">Generate lecture</h1>
+<div class="container border border-secondary rounded-lg p-5 d-flex flex-column justify-content-center align-items-center mx-auto w-50">
+  <%= simple_form_for @lecture do |f| %>
+    <%= f.input :title %>
+    <%= f.input :content %>
+    <%= f.input :instructions, label: "Further instructions to SOPHAI" %>
+    <%= f.input :file, as: :file %>
+    <%= f.button :submit, class:"button" %>
+  <% end %>
+</div>
