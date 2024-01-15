@@ -2,7 +2,9 @@ class Lecture < ApplicationRecord
   belongs_to :teacher, class_name: "User", foreign_key: "user_id"
   has_one :chat, dependent: :destroy
   has_many_attached :photos
-  has_one_attached :file
+  has_one_attached :file do |attachable|
+    attachable.options[:service_name]  = :local
+  end
   has_many :notes, dependent: :destroy
   has_many :quizzes, dependent: :destroy, class_name: "Quizz"
   has_many :student_lectures, dependent: :destroy

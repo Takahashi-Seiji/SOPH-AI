@@ -29,7 +29,7 @@
         <% end %>
       </div>
     </div>
-    <div data-controller="chat" class="lecture-chat p-3">
+    <div data-controller="chat" data-chat-chat-id-value="<%= @chat.id %>" class="lecture-chat p-3 scrollable-chat">
       <div data-chat-target="conversationDisplay">
         <h1>Chat with Soph.AI</h1>
         <%= turbo_frame_tag "messages" do %>

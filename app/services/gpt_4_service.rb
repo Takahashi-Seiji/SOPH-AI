@@ -1,7 +1,10 @@
 class Gpt4Service
-  def initialize(message, lecture)
-    @client = OpenAI::Client.new
+  def initialize(lecture, message)
     @message = message
     @lecture = lecture
+  end
+
+  def client
+    OpenAI::Client.new
   end
 end
