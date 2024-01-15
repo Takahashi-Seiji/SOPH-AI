@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "quizContainer", "fakeQuizContainer", "code", "editForm", "notes", "noteForm", "noteContent", "editNoteForm"]
+  static targets = [ "quizContainer", "fakeQuizContainer", "code", "editForm", "notes", "noteForm", "noteContent", "editNoteForm", "addNoteButton"]
 
   connect() {
     console.log("Hello, Stimulus!")
@@ -36,6 +36,7 @@ export default class extends Controller {
     const noteElement = document.createElement("h3")
     noteElement.innerHTML = noteContent
     note.appendChild(noteElement)
+    this.addNoteButtonTarget.classList.add("d-none")
   }
 
   displayEditNoteForm(event) {

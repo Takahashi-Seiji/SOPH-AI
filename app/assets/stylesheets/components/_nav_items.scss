@@ -1,0 +1,12 @@
+.nav-item {
+  display: inline-block;
+  margin: 0 0.5em;
+  padding: 0.25em 0.5em;
+  border-radius: 0.25em;
+  color: #333;
+  text-decoration: none;
+  &:hover {
+    background-color: #a5a5a5;
+    color: #eee;
+  }
+}

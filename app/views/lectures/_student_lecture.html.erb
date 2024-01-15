@@ -1,55 +1,57 @@
 <div class="row">
-  <div class="bg-primary col-8" style="min-height: 100vh;">
-    <h1 id="lecture-title"><%= @lecture.title %></h1>
+  <div class="col-8 p-5 lecture-summary" style="min-height: 100vh;">
+    <h1 id="lecture-title", class="mb-4 text-center"><%= @lecture.title %></h1>
     <h2 id="lecture-content"><%= simple_format(@lecture.summary) %></h2>
   </div>
 
-  <% if current_user.student? && @lecture.quiz_for_student(current_user)&.status == "created" %>
-    <%= turbo_frame_tag "quizz" do %>
-      <%= render 'student_quiz' %>
-    <% end %>
-  <% elsif  @lecture.quiz_for_student(current_user)&.status == "submitted" %>
-    <%= turbo_frame_tag id=dom_id(@lecture) do %>
-      <%= render 'results', quiz: @lecture.quiz_for_student(current_user), lecture: @lecture %>
-    <% end %>
-  <% end %>
-  <%= button_to 'Generate real Quiz', lecture_quizzes_path(@lecture), data: {turbo_method: :post} %>
-
-  <div class="col-4">
-    <h1>Your notes: </h1>
-    <div data-lecture-target="notes" class="notes-container">
-      <% @notes.each do |note| %>
-        <h2><%= simple_format(note.content) %></h2>
+  <div class="col-4 p-3">
+    <div class="lecture-notes mb-5 p-3">
+      <h1 class="text-center">NOTES</h1>
+      <div data-lecture-target="notes" class="notes-container">
+        <% @notes.each do |note| %>
+          <h2><%= simple_format(note.content) %></h2>
         <% end %>
+      </div>
+      <div class="text-center">
+        <button data-action="click->lecture#displayNoteForm" data-lecture-target="addNoteButton" class="mb-3 text-center">Take note</button>
+        <button data-action="click->lecture#displayEditNoteForm" class="text-center">Edit your notes</button>
+      </div>
+      <div class="d-none" data-lecture-target="noteForm">
+        <%= simple_form_for [@lecture, Note.new], remote: true, data: {action: "submit->lecture#addNote"} do |f| %>
+          <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"}, class:"note-input" %>
+          <%= f.button :submit, "Save Note" %>
+        <% end %>
+      </div>
+      <div class="d-none" data-lecture-target="editNoteForm">
+        <%= simple_form_for [@lecture, @note], remote: true, data: {action: "submit->lecture#editNote"} do |f| %>
+          <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"}, class:"note-input" %>
+          <%= f.button :submit, "Update Note" %>
+        <% end %>
+      </div>
     </div>
-    <button data-action="click->lecture#displayNoteForm">Take notes</button>
-    <button data-action="click->lecture#displayEditNoteForm">Edit your notes</button>
-    <div class="d-none" data-lecture-target="noteForm">
-      <%= simple_form_for [@lecture, Note.new], remote: true, data: {action: "submit->lecture#addNote"} do |f| %>
-        <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"} %>
-        <%= f.button :submit, "Save Note" %>
+    <div data-controller="chat" class="lecture-chat p-3">
+      <div data-chat-target="conversationDisplay">
+        <h1>Chat with Soph.AI</h1>
+        <%= turbo_frame_tag "messages" do %>
+          <%= render 'chat' %>
+        <% end %>
+      </div>
+      <%= simple_form_for [@lecture, @chat, Message.new], remote: true, data: {action: "submit->chat#message", "chat_chat_id": @chat.id} do |f| %>
+        <%= f.text_area :content, as: :text, data: {chat_target: "messageContent"}, class:"chat-input" %>
+        <%= f.button :submit, "Send Message" %>
       <% end %>
     </div>
-    <div class="d-none" data-lecture-target="editNoteForm">
-      <%= simple_form_for [@lecture, @note], remote: true, data: {action: "submit->lecture#editNote"} do |f| %>
-        <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"} %>
-        <%= f.button :submit, "Update Note" %>
+    <div class="text-center mt-5">
+      <% if current_user.student? && @lecture.quiz_for_student(current_user)&.status == "created" %>
+        <%= turbo_frame_tag "quizz" do %>
+          <%= render 'student_quiz' %>
+        <% end %>
+      <% elsif  @lecture.quiz_for_student(current_user)&.status == "submitted" %>
+        <%= turbo_frame_tag id=dom_id(@lecture) do %>
+          <%= render 'results', quiz: @lecture.quiz_for_student(current_user), lecture: @lecture %>
+        <% end %>
       <% end %>
+      <%= button_to 'Generate real Quiz', lecture_quizzes_path(@lecture), data: {turbo_method: :post} %>
     </div>
-
-
-
-  <div data-controller="chat" class="bg-primary">
-    <div data-chat-target="conversationDisplay">
-      <h1>Conversation here</h1>
-      <%= turbo_frame_tag "messages" do %>
-        <%= render 'chat' %>
-      <% end %>
-    </div>
-    <%= simple_form_for [@lecture, @chat, Message.new], remote: true, data: {action: "submit->chat#message", "chat_chat_id": @chat.id} do |f| %>
-      <%= f.text_area :content, as: :text, data: {chat_target: "messageContent"} %>
-      <%= f.button :submit, "Send Message" %>
-    <% end %>
-  </div>
   </div>
 </div>
