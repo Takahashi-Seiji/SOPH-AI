@@ -8,6 +8,7 @@ class LecturesController < ApplicationController
 
     if current_user.student?
       authorize_student_actions
+      create_student_lecture
       create_or_find_note
       @student_lecture = StudentLecture.find_by(lecture: @lecture, user: current_user)
     end
@@ -54,6 +55,13 @@ class LecturesController < ApplicationController
 
   def lecture_params
     params.require(:lecture).permit(:title, :summary, :content, {photos: []}, :file)
+  end
+
+  def create_student_lecture
+    if StudentLecture.exists?(lecture: @lecture, user: current_user)
+    else
+      StudentLecture.create(lecture: @lecture, user: current_user)
+    end
   end
 
   def create_or_find_note

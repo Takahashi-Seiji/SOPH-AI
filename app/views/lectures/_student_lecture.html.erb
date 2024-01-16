@@ -52,7 +52,7 @@
         <% end %>
       <% end %>
       <% if @submitted_quizzes_count < 5 %>
-        <%= button_to 'Generate real Quiz', lecture_quizzes_path(@lecture), data: {turbo_method: :post} %>
+        <%= button_to 'Generate Quiz', lecture_quizzes_path(@lecture), data: {turbo_method: :post} %>
       <% end %>
     </div>
   </div>
