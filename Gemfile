@@ -14,6 +14,7 @@ gem "sidekiq-failures", "~> 1.0"
 gem 'yomu'
 gem 'pdf-reader'
 gem 'track_progress', git: 'https://github.com/daniel-enqz/track_progress.git'
+gem "simple_calendar", "~> 2.4"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"

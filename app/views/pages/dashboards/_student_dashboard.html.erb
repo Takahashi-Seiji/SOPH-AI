@@ -1,12 +1,12 @@
-<% current_user.student_lectures.map(&:lecture).uniq.each do |lecture| %>
-  <div class="student-lecture-card">
-  <div class="student-lecture-card-info">
-    <p class="student-lecture-card-title"><%= link_to lecture.title, lecture_path(lecture), class:"text-decoration-none text-dark" %></p>
-    <p class="scrollable-summary"><%= lecture.summary %></p>
-  </div>
-  <div class="student-lecture-card-footer">
-    <p class="student-lecture-card-tag">#HTML #CSS </p>
-    <%= link_to "Go to lecture", lecture_path(lecture), class:"student-lecture-card-action text-decoration-none text-white" %>
-  </div>
+<div class="calendar-container">
+  <%= month_calendar(events: @reminders) do |date, reminders| %>
+    <%= date %>
+
+    <% reminders.each do |reminder| %>
+      <div class="meeting">
+        <p><%= reminder.name %></p>
+        <small><%= reminder.time unless reminder.multi_days? %></small>
+      </div>
+    <% end %>
+  <% end %>
 </div>
-<% end %>
