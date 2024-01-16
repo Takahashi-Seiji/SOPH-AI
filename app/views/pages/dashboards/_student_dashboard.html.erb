@@ -1,12 +1,25 @@
-<div class="calendar-container">
-  <%= month_calendar(events: @reminders) do |date, reminders| %>
-    <%= date %>
+<div class="row p-5">
+  <div class="calendar-container col-8">
+    <%= month_calendar(events: @reminders) do |date, reminders| %>
+      <%= date %>
 
-    <% reminders.each do |reminder| %>
-      <div class="meeting">
-        <p><%= reminder.name %></p>
-        <small><%= reminder.time unless reminder.multi_days? %></small>
-      </div>
+      <% reminders.each do |reminder| %>
+        <div class="meeting">
+          <p><%= reminder.name %></p>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
+  <div class="col-4 d-flex justify-content-center">
+    <div class="profile-info-card">
+  <div class="profile-info-image">
+    <%= cl_image_tag(current_user.photo.key, class:"profile-image") %>
+  </div>
+  <div class="profile-info-textContainer">
+    <p class="profile-info-name"><%= current_user.first_name %> <%= current_user.last_name %></p>
+    <p class="profile"><%= current_user.role %></p>
+    <%= link_to "Edit my profile information", edit_user_registration_path, class:"text-decoration-none text-dark" %>
+  </div>
+</div>
+  </div>
 </div>
