@@ -3,7 +3,7 @@ class Lecture < ApplicationRecord
   has_one :chat, dependent: :destroy
   has_many_attached :photos
   has_one_attached :file, dependent: :purge do |attachable|
-    attachable.options[:service_name]  = :local
+    attachable.options[:service_name] = :local
   end
   has_many :notes, dependent: :destroy
   has_many :quizzes, dependent: :destroy, class_name: "Quizz"
