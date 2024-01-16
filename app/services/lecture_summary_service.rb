@@ -1,5 +1,4 @@
 require "openai"
-require "yomu"
 require 'pdf-reader'
 
 class LectureSummaryService < Gpt4Service
