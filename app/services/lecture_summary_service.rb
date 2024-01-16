@@ -12,7 +12,7 @@ class LectureSummaryService < Gpt4Service
     begin
       response = client.chat(
         parameters: {
-          model: "gpt-4-1106-preview",
+          model: "gpt-3.5-turbo",
           messages: [{ role: "user", content: generate_text }],
           temperature: 0.9
         }
