@@ -14,7 +14,7 @@ class CreateQuizService < Gpt4Service
     to another."
 
     begin
-      response = @client.chat(
+      response = client.chat(
         parameters: {
           model: "gpt-4",
           messages: [{ role: "user", content: prompt}],
