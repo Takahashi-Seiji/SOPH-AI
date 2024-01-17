@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-8 p-5 lecture-summary" style="min-height: 100vh;">
+  <div id="lecture-summary" class="col-8 p-5 lecture-summary" style="min-height: 100vh;">
     <h1 id="lecture-title", class="mb-4 text-center" style="text-decoration: underline";><%= @lecture.title %></h1>
     <h2 id="lecture-content"><%= simple_format(@lecture.summary) %></h2>
   </div>
@@ -41,19 +41,36 @@
         <%= f.button :submit, "Send Message" %>
       <% end %>
     </div>
-    <div class="text-center mt-5">
-      <% if current_user.student? && @lecture.quiz_for_student(current_user)&.status == "created" %>
-        <%= turbo_frame_tag "quizz" do %>
-          <%= render 'student_quiz' %>
+
+    <div id="quiz-container" class="col-8 p-5 lecture-summary d-none" style="min-height: 100vh;">
+
+      <div class="text-center mt-5">
+        <% if current_user.student? && @lecture.quiz_for_student(current_user)&.status == "created" %>
+          <%= turbo_frame_tag "quizz" do %>
+            <%= render 'student_quiz' %>
+          <% end %>
+        <% elsif  @lecture.quiz_for_student(current_user)&.status == "submitted" %>
+          <%= turbo_frame_tag id=dom_id(@lecture) do %>
+            <%= render 'results', quiz: @lecture.quiz_for_student(current_user), lecture: @lecture %>
+          <% end %>
         <% end %>
-      <% elsif  @lecture.quiz_for_student(current_user)&.status == "submitted" %>
-        <%= turbo_frame_tag id=dom_id(@lecture) do %>
-          <%= render 'results', quiz: @lecture.quiz_for_student(current_user), lecture: @lecture %>
-        <% end %>
-      <% end %>
-      <% if @submitted_quizzes_count < 5 %>
-        <%= button_to 'Generate Quiz', lecture_quizzes_path(@lecture), data: {turbo_method: :post} %>
-      <% end %>
+      </div>
+    </div>
+  <%= button_to 'Generate Quiz', lecture_quizzes_path(@lecture), data: {turbo_method: :post},  id: 'generateQuiz' %>
+
+
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    var generateQuizButton = document.getElementById('generateQuiz');
+    if (generateQuizButton) {
+      generateQuizButton.addEventListener('click', function() {
+        document.getElementById('lecture-summary').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+      });
+    }
+  });
+</script>
