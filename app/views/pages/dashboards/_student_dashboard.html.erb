@@ -2,10 +2,12 @@
   <div class="calendar-container col-7">
     <%= month_calendar(events: @reminders) do |date, reminders| %>
       <%= date %>
-      <% reminders.each do |reminder| %>
-        <div class="meeting">
-          <p><%= reminder.name %></p>
-        </div>
+      <% if @reminders.present?  %>
+        <% reminders.each do |reminder| %>
+          <div class="meeting">
+            <p><%= reminder.name %></p>
+          </div>
+        <% end %>
       <% end %>
     <% end %>
   </div>
