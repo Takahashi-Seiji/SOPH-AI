@@ -6,8 +6,9 @@ class QuizzesController < ApplicationController
     student_lecture = StudentLecture.find_by(user: current_user, lecture: @lecture)
 
     @quiz = Quizz.new(student: current_user, lecture: @lecture, status: 'draft')
+
     authorize @quiz, :create?
-    create_gpt_quizz
+    create_gpt_quizz if @quiz.save
   end
 
   def show
@@ -59,13 +60,8 @@ class QuizzesController < ApplicationController
   private
 
   def create_gpt_quizz
-    service_response = quiz_service.call
-    if service_response[:status] == 'success'
-      @quiz.update!(status: 'created')
-    else
-      flash[:alert] = service_response[:message]
-    end
-    redirect_to lecture_path(@lecture)
+    # RunGptRequestJob.perform_later(@lecture, @quiz)
+    CreateQuizService.new(@lecture, @quiz).call
   end
 
   def submit_quiz
