@@ -7,32 +7,62 @@
 
   td,
   th {
-    border: 1px solid #ddd;
+    border: 1px solid $white;
     padding: 8px;
     text-align: center;
+    color: $white;
+    background-color: $light-gray;
   }
 
   .today {
-    background-color: #FAF3DD;
+    background-color: #2bff0065;
   }
 
   .weekend {
-    background-color: #f0f0f0;
+    background-color: $light-gray;
   }
 
   .holiday {
-    background-color: #ffcccc;
+    background-color: $light-gray;
   }
 }
 
+.calendar-btn {
+  background-color: transparent;
+  padding: 10px;
+  border: 1px solid $green;
+  border-radius: 10px;
+  color: $white;
+}
+
 .meeting {
-  color: white;
+  color: $white;
   padding: 8px 24px;
   border-radius: 4px;
-  background: #1EDD88;
+  background: $green;
   transition: background 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
-    background: #1BCB7F;
+    background: #137200;
   }
+}
+
+.calendar-form {
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid $white;
+  display: flex;
+  width: 350px;
+}
+
+.add-reminder-btn {
+  background-color: transparent;
+  border: 1px solid $green;
+  padding: 10px;
+  border-radius: 10px;
+  color: $white;
+  margin-left: auto;
 }
