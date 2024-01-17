@@ -3,6 +3,8 @@
   height: 80px;
   border-radius: 20px;
   padding: 15px;
+  background-color: $light-gray;
+  color: $white;
 }
 
 .no-padding {
@@ -14,4 +16,6 @@
   height: 80px;
   border-radius: 20px;
   padding: 10px;
+  background-color: $light-gray;
+  color: $white;
 }

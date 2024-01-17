@@ -1,44 +1,45 @@
-<div class="row">
-  <div class="col-8 p-5 lecture-summary" style="min-height: 100vh;">
+<div class="row p-2">
+  <div class="col-8 lecture-summary p-5">
     <h1 id="lecture-title", class="mb-4 text-center" style="text-decoration: underline";><%= @lecture.title %></h1>
     <h2 id="lecture-content"><%= simple_format(@lecture.summary) %></h2>
   </div>
 
-  <div class="col-4 p-3">
-    <div class="lecture-notes mb-5 p-3">
-      <h1 class="text-center">NOTES</h1>
-      <div data-lecture-target="notes" class="notes-container">
-        <% @notes.each do |note| %>
-          <h2><%= simple_format(note.content) %></h2>
-        <% end %>
+  <div class="col-4">
+    <h1 class="text-center">Notes</h1>
+      <div data-lecture-target="notes" class="notes-container p-4 mb-4">
+        <div>
+          <% @notes.each do |note| %>
+            <h4><%= simple_format(note.content) %></h4>
+          <% end %>
+        </div>
       </div>
       <div class="text-center">
-        <button data-action="click->lecture#displayNoteForm" data-lecture-target="addNoteButton" class="mb-3 text-center">Take note</button>
-        <button data-action="click->lecture#displayEditNoteForm" class="text-center">Edit your notes</button>
+        <button data-action="click->lecture#displayNoteForm" data-lecture-target="addNoteButton" class="mb-3 text-center note-btn"><strong>Take note</strong></button>
+        <button data-action="click->lecture#displayEditNoteForm" class="text-center note-btn"><strong>Edit your notes</strong></button>
       </div>
       <div class="d-none" data-lecture-target="noteForm">
         <%= simple_form_for [@lecture, Note.new], remote: true, data: {action: "submit->lecture#addNote"} do |f| %>
           <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"}, class:"note-input" %>
-          <%= f.button :submit, "Save Note" %>
+          <%= f.button :submit, "Save Note", class:"note-btn" %>
         <% end %>
       </div>
       <div class="d-none" data-lecture-target="editNoteForm">
         <%= simple_form_for [@lecture, @note], remote: true, data: {action: "submit->lecture#editNote"} do |f| %>
           <%= f.text_area :content, as: :text, data: {lecture_target: "noteContent"}, class:"note-input mt-3" %>
-          <%= f.button :submit, "Update Note" %>
+          <%= f.button :submit, "Update Note", class:"note-btn" %>
         <% end %>
       </div>
-    </div>
-    <div data-controller="chat" data-chat-chat-id-value="<%= @chat.id %>" class="lecture-chat p-3 scrollable-chat">
-      <div data-chat-target="conversationDisplay">
+
+    <div data-controller="chat" data-chat-chat-id-value="<%= @chat.id %>" class="p-3">
         <h1>Chat with Soph.AI</h1>
+      <div data-chat-target="conversationDisplay" class="conversation-chat mb-3">
         <%= turbo_frame_tag "messages" do %>
           <%= render 'chat' %>
         <% end %>
       </div>
       <%= simple_form_for [@lecture, @chat, Message.new], remote: true, data: {action: "submit->chat#message", "chat_chat_id": @chat.id} do |f| %>
-        <%= f.text_area :content, as: :text, data: {chat_target: "messageContent"}, class:"chat-input" %>
-        <%= f.button :submit, "Send Message" %>
+        <%= f.text_area :content, as: :text, placeholder: "Your message...", data: {chat_target: "messageContent"}, class:"chat-input" %>
+        <%= f.button :submit, "Send Message", class:"note-btn" %>
       <% end %>
     </div>
     <div class="text-center mt-5">
