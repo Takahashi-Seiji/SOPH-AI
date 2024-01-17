@@ -2,8 +2,8 @@ class Lecture < ApplicationRecord
   belongs_to :teacher, class_name: "User", foreign_key: "user_id"
   has_one :chat, dependent: :destroy
   has_many_attached :photos
-  has_one_attached :file do |attachable|
-    attachable.options[:service_name]  = :local
+  has_one_attached :file, dependent: :purge do |attachable|
+    attachable.options[:service_name] = :local
   end
   has_many :notes, dependent: :destroy
   has_many :quizzes, dependent: :destroy, class_name: "Quizz"
@@ -19,5 +19,9 @@ class Lecture < ApplicationRecord
 
   def quiz_for_student(user)
     quizzes.where(student: user)&.last
+  end
+
+  def average_quiz_grade
+    (quizzes.average(:grade).to_f * 100).round / 10
   end
 end

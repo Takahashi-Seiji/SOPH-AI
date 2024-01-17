@@ -1,5 +1,4 @@
 require "openai"
-require "yomu"
 require 'pdf-reader'
 
 class LectureSummaryService < Gpt4Service
@@ -13,7 +12,7 @@ class LectureSummaryService < Gpt4Service
     begin
       response = client.chat(
         parameters: {
-          model: "gpt-4-1106-preview",
+          model: "gpt-3.5-turbo-16k",
           messages: [{ role: "user", content: generate_text }],
           temperature: 0.9
         }

@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :quizzs, foreign_key: "user_id", dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :lectures_joined_as_student, through: :student_lectures, source: :lecture
+  has_many :reminders, dependent: :destroy
 
   def teacher?
     role == "teacher"
@@ -22,5 +23,11 @@ class User < ApplicationRecord
 
   def student?
     role == "student"
+  end
+
+  def lecture_quiz_averages
+    lectures_joined_as_student.map do |lecture|
+      { lecture: lecture, average: lecture.average_quiz_grade * 10 }
+    end
   end
 end

@@ -1,12 +1,22 @@
-<div class="calendar-container">
-  <%= month_calendar(events: @reminders) do |date, reminders| %>
-    <%= date %>
-
-    <% reminders.each do |reminder| %>
-      <div class="meeting">
-        <p><%= reminder.name %></p>
-        <small><%= reminder.time unless reminder.multi_days? %></small>
-      </div>
+<div class="row p-5">
+  <div class="calendar-container col-7">
+    <%= month_calendar(events: @reminders) do |date, reminders| %>
+      <%= date %>
+      <% reminders.each do |reminder| %>
+        <div class="meeting">
+          <p><%= reminder.name %></p>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
+  <div class="col-5 d-flex flex-column align-items-center">
+    <div>
+      <% current_user.student_lectures.map(&:lecture).uniq.each do |lecture| %>
+        <div class="student-lecture-card">
+          <div class="card__title"><%= link_to lecture.title, lecture_path(lecture), class:"lecture-title-card" %></div>
+          <div class="card__subtitle"><%= lecture.summary.split.first(10).join(" ") %>...</div>
+          <div class="card__indicator"><span class="card__indicator-amount">Quiz grade:</span> <span class="card__indicator-percentage"><%= lecture.average_quiz_grade %>%</span></div>
+          <div class="card__progress"><progress max="100" value="<%= lecture.average_quiz_grade %>"></progress></div>
+        </div>
+      <% end %>
 </div>

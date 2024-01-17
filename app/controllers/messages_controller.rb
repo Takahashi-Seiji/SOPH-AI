@@ -1,4 +1,3 @@
-require "pry-byebug"
 class MessagesController < ApplicationController
   def create
     @chat = Chat.find(params[:chat_id])
