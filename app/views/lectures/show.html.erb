@@ -1,4 +1,4 @@
-<div class="container" data-controller="lecture">
+<div class="container p-4" data-controller="lecture">
   <% if current_user.teacher? %>
     <%= render 'teacher_lecture', lecture: @lecture %>
   <% elsif %>
