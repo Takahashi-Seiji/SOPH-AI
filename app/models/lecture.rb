@@ -20,4 +20,8 @@ class Lecture < ApplicationRecord
   def quiz_for_student(user)
     quizzes.where(student: user)&.last
   end
+
+  def average_quiz_grade
+    (quizzes.average(:grade).to_f * 100).round / 10
+  end
 end

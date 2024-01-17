@@ -25,4 +25,10 @@ class User < ApplicationRecord
   def student?
     role == "student"
   end
+
+  def lecture_quiz_averages
+    lectures_joined_as_student.map do |lecture|
+      { lecture: lecture, average: lecture.average_quiz_grade * 10 }
+    end
+  end
 end
