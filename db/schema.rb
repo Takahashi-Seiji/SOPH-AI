@@ -130,6 +130,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_16_180535) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "quiz_submissions_count", default: 0
     t.index ["lecture_id"], name: "index_student_lectures_on_lecture_id"
     t.index ["user_id"], name: "index_student_lectures_on_user_id"
   end

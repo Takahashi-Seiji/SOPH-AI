@@ -3,6 +3,8 @@ class QuizzesController < ApplicationController
 
   def create
     @lecture = Lecture.find(params[:lecture_id])
+    student_lecture = StudentLecture.find_by(user: current_user, lecture: @lecture)
+
     @quiz = Quizz.new(student: current_user, lecture: @lecture, status: 'draft')
     authorize @quiz, :create?
     create_gpt_quizz
@@ -10,6 +12,9 @@ class QuizzesController < ApplicationController
 
   def show
     @quiz = Quizz.find(params[:id])
+    @lecture = @quiz.lecture
+    #@submitted_quizzes_count = @lecture.quizzes.where(user_id: current_user.id).count
+
     authorize @quiz, :show?
 
     respond_to do |format|
@@ -27,6 +32,7 @@ class QuizzesController < ApplicationController
 
   def update
     @quiz = Quizz.find(params[:id])
+    @student_lecture = StudentLecture.find_by(user: current_user, lecture: @quiz.lecture)
     authorize @quiz, :update?
     return submit_quiz if params["submit_quiz"]
 
@@ -71,6 +77,8 @@ class QuizzesController < ApplicationController
     end
     grade = (global_score / @quiz.questions.count.to_f) * 10
     @quiz.update!(status: 'submitted', grade: grade)
+    #student_lecture = StudentLecture.find_by(user: current_user, lecture: @quiz.lecture)
+    #student_lecture.increment!(:quiz_submissions_count)
     render turbo_stream: turbo_stream.replace("quizz", partial: "lectures/results", locals: { quiz: @quiz, lecture: @quiz.lecture, correct_answers: global_score })
   end
 

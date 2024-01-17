@@ -1,7 +1,7 @@
 class LecturesController < ApplicationController
   def show
     @lecture = Lecture.find(params[:id])
-
+    @submitted_quizzes_count = @lecture.quizzes.where(user_id: current_user.id).count
     redirect_to root_path unless lecture_accessible?
     authorize current_user, :view_lecture?
     setup_lecture_resources
@@ -10,6 +10,7 @@ class LecturesController < ApplicationController
       authorize_student_actions
       create_student_lecture
       create_or_find_note
+      @student_lecture = StudentLecture.find_by(lecture: @lecture, user: current_user)
     end
   end
 
@@ -58,10 +59,8 @@ class LecturesController < ApplicationController
 
   def create_student_lecture
     if StudentLecture.exists?(lecture: @lecture, user: current_user)
-      flash[:notice] = "You have already joined this lecture!"
     else
       StudentLecture.create(lecture: @lecture, user: current_user)
-      flash[:notice] = "You have successfully joined the lecture!"
     end
   end
 

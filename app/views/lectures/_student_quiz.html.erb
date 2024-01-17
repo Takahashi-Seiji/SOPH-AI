@@ -6,14 +6,15 @@
     <% if @quiz.submitted? %>
       <div class="alert alert-info">
         You have already submitted this quiz.
-        <%= @quiz.grades %>
+        <%= @quiz.grade %>
       </div>
     <% else %>
+      <a class="btn btn-primary mb-3" href="#" role="button" id="nextQuestion">Next</a>
       <%= form_with url: lecture_quiz_path(@lecture, @quiz, submit_quiz: true), method: :patch do |form| %>
-        <ul>
-          <% quizz_questions.each do |question| %>
-            <li>
-              <div class="question">
+        <div id="quizCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+          <div class="carousel-inner">
+            <% quizz_questions.each_with_index do |question, index| %>
+              <div class="carousel-item <%= 'active' if index.zero? %>">
                 <h2><%= question.title %></h2>
                 <% question.answers.each do |answer| %>
                   <div class="form-check">
@@ -22,11 +23,26 @@
                   </div>
                 <% end %>
               </div>
-            </li>
-          <% end %>
-        </ul>
+            <% end %>
+          </div>
+        </div>
         <%= form.submit 'Submit', class: 'btn btn-danger mt-2' %>
       <% end %>
     <% end %>
   </div>
 <% end %>
+
+<script>
+  document.getElementById('nextQuestion').addEventListener('click', function(event) {
+    event.preventDefault();
+    var $carousel = $('#quizCarousel');
+    var $activeItem = $carousel.find('.carousel-item.active');
+    var isLastItem = $carousel.find('.carousel-item').index($activeItem) >= 9;
+
+    if (!isLastItem) {
+      $carousel.carousel('next');
+    } else {
+      this.style.display = 'none'; // Hide the "Next" button
+    }
+  });
+</script>

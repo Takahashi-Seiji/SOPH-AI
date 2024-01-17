@@ -4,7 +4,6 @@ class ChatsController < ApplicationController
     @chat = @lecture.chats.new
     authorize @message
 
-    raise
     if @chat.save!
       create_ai_message(@message, @lecture)
       redirect_to lecture_path(@lecture)
