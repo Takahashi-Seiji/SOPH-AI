@@ -5,8 +5,14 @@ class PagesController < ApplicationController
   end
 
   def dashboard
-    @average_grade = current_user.student_lectures.map(&:lecture).map(&:average_quiz_grade).sum / current_user.student_lectures.count
-    # Scope your query to the dates being shown:
+    @average_grade = begin
+      if current_user.student_lectures.count.zero?
+        return 0
+      else
+        current_user.student_lectures.map(&:lecture).map(&:average_quiz_grade).sum / current_user.student_lectures.count
+      end
+    end
+
   start_date = params.fetch(:start_date, Date.today).to_date
 
   # For a monthly view:
