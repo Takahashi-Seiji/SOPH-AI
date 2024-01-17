@@ -1,14 +1,133 @@
 .lecture-summary {
-  border: 1px solid #c5c5c5;
+  border-radius: 20px;
+  min-height: 100vh;
+  overflow-y: auto;
+  max-height: 850px;
+  color: $white;
+  background-color: $light-gray;
+}
+
+.notes-container {
+  background-color: $light-gray;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.conversation-chat {
+  background-color: $light-gray;
+  padding: 15px;
   border-radius: 20px;
 }
 
-.lecture-notes {
-  border: 1px solid #c5c5c5;
-  border-radius: 20px;
+
+
+/* For Webkit browsers (Chrome, Safari) */
+.lecture-summary::-webkit-scrollbar {
+  width: 5px;
+  /* Set the width of the scrollbar */
 }
 
-.lecture-chat {
-  border: 1px solid #c5c5c5;
-  border-radius: 20px;
+.lecture-summary::-webkit-scrollbar-thumb {
+  background-color: $blue;
+  /* Set the color of the scrollbar thumb */
+  border-radius: 12px;
+  /* Set the border-radius of the scrollbar thumb */
+}
+
+.lecture-summary::-webkit-scrollbar-track {
+  background-color: #00000030;
+  /* Set the color of the scrollbar track */
+}
+
+/* For Firefox */
+.lecture-summary {
+  scrollbar-width: thin !important;
+  /* Set the width of the scrollbar */
+}
+
+.lecture-summary::-moz-scrollbar-thumb {
+  background-color: #4CAF50;
+  /* Set the color of the scrollbar thumb */
+  border-radius: 12px;
+  /* Set the border-radius of the scrollbar thumb */
+}
+
+.lecture-summary::-moz-scrollbar-track {
+  background-color: #f1f1f1;
+  /* Set the color of the scrollbar track */
+}
+
+
+.lecture-summary::-webkit-scrollbar {
+  width: 5px;
+  /* Set the width of the scrollbar */
+}
+
+.lecture-summary::-webkit-scrollbar-thumb {
+  background-color: $blue;
+  /* Set the color of the scrollbar thumb */
+  border-radius: 12px;
+  /* Set the border-radius of the scrollbar thumb */
+}
+
+.lecture-summary::-webkit-scrollbar-track {
+  background-color: #00000030;
+  /* Set the color of the scrollbar track */
+}
+
+/* For Firefox */
+.lecture-summary {
+  scrollbar-width: thin !important;
+  /* Set the width of the scrollbar */
+}
+
+.lecture-summary::-moz-scrollbar-thumb {
+  background-color: #4CAF50;
+  /* Set the color of the scrollbar thumb */
+  border-radius: 12px;
+  /* Set the border-radius of the scrollbar thumb */
+}
+
+.lecture-summary::-moz-scrollbar-track {
+  background-color: #f1f1f1;
+  /* Set the color of the scrollbar track */
+}
+
+
+
+
+
+.notes-container::-webkit-scrollbar {
+  width: 5px;
+  /* Set the width of the scrollbar */
+}
+
+.notes-container::-webkit-scrollbar-thumb {
+  background-color: $blue;
+  /* Set the color of the scrollbar thumb */
+  border-radius: 12px;
+  /* Set the border-radius of the scrollbar thumb */
+}
+
+.notes-container::-webkit-scrollbar-track {
+  background-color: #00000030;
+  /* Set the color of the scrollbar track */
+}
+
+/* For Firefox */
+.notes-container {
+  scrollbar-width: thin !important;
+  /* Set the width of the scrollbar */
+}
+
+.notes-container::-moz-scrollbar-thumb {
+  background-color: #4CAF50;
+  /* Set the color of the scrollbar thumb */
+  border-radius: 12px;
+  /* Set the border-radius of the scrollbar thumb */
+}
+
+.notes-container::-moz-scrollbar-track {
+  background-color: #f1f1f1;
+  /* Set the color of the scrollbar track */
 }
