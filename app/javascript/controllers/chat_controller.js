@@ -9,19 +9,20 @@ export default class extends Controller {
 
   connect() {
     console.log("Hello, Stimulus From Chat!");
+    this.userName = this.element.dataset.chatUserFirstName
   }
 
   message(event) {
     event.preventDefault()
     const messageContent = this.messageContentTarget.value
     const messageElement = document.createElement("h5")
-    messageElement.innerHTML = `<strong>Student:</strong> ${messageContent}`
+    messageElement.innerHTML = `<strong class="message-role">${this.userName}</strong> ${messageContent}`
     this.conversationDisplayTarget.appendChild(messageElement)
     this.messageContentTarget.value = ""
     console.log(messageContent, this.chatIdValue);
 
     const thinkingElement = document.createElement("h5")
-    thinkingElement.innerHTML = `<strong>SophAI:</strong> Thinking...`
+    thinkingElement.innerHTML = `<strong class="message-role">SOPHAI:</strong> Thinking...`
     this.conversationDisplayTarget.appendChild(thinkingElement)
 
     fetch("/messages", {
@@ -41,7 +42,7 @@ export default class extends Controller {
 
   appendAiResponse(messageContent) {
     const messageElement = document.createElement("h5")
-    messageElement.innerHTML = `<strong>SophAI:</strong> ${messageContent}`
+    messageElement.innerHTML = `<strong class="message-role">SOPHAI:</strong> ${messageContent}`
     this.conversationDisplayTarget.appendChild(messageElement)
   }
 }
