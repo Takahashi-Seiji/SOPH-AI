@@ -16,13 +16,13 @@ export default class extends Controller {
     event.preventDefault()
     const messageContent = this.messageContentTarget.value
     const messageElement = document.createElement("h5")
-    messageElement.innerHTML = `<strong class="message-role">${this.userName}</strong> ${messageContent}`
+    messageElement.innerHTML = `<strong class="message-role-user">${this.userName}</strong> ${messageContent}`
     this.conversationDisplayTarget.appendChild(messageElement)
     this.messageContentTarget.value = ""
     console.log(messageContent, this.chatIdValue);
 
     const thinkingElement = document.createElement("h5")
-    thinkingElement.innerHTML = `<strong class="message-role">SOPHAI:</strong> Thinking...`
+    thinkingElement.innerHTML = `<strong class="message-role-assistant">SOPHAI:</strong> Thinking...`
     this.conversationDisplayTarget.appendChild(thinkingElement)
 
     fetch("/messages", {
@@ -42,7 +42,7 @@ export default class extends Controller {
 
   appendAiResponse(messageContent) {
     const messageElement = document.createElement("h5")
-    messageElement.innerHTML = `<strong class="message-role">SOPHAI:</strong> ${messageContent}`
+    messageElement.innerHTML = `<strong class="message-role-assistant">SOPHAI:</strong> ${messageContent}`
     this.conversationDisplayTarget.appendChild(messageElement)
   }
 }

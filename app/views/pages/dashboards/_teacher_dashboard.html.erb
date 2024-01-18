@@ -26,7 +26,15 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <% lecture.students.uniq.each do |student| %>
-                  <li class="dropdown-student"><%= student.first_name %> <%= student.last_name %></li>
+                  <li class="dropdown-student">
+                    <%= student.first_name %> <%= student.last_name %>:
+                    <% quiz = lecture.quizzes.find_by(student: student) %>
+                    <% if quiz %>
+                      <%= quiz.grade * 10 %>%
+                    <% else %>
+                      Not yet graded
+                    <% end %>
+                  </li>
                 <% end %>
               </ul>
             </div>
