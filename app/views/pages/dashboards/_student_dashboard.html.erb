@@ -36,8 +36,8 @@
           <p class="profile-info-name"><%= current_user.first_name %> <%= current_user.last_name %></p>
           <p class="profile-info-email">
             Average grade:
-            <span class="<%= (@average_grade || 0) <= 50 ? 'grade-red' : (@average_grade || 0) <= 80 ? 'grade-orange' : 'grade-green' %>">
-            <%= @average_grade || 0 %>%
+            <span class="<%= (average_grade = current_user.student_lectures.map { |sl| sl.lecture.average_quiz_grade_for_student(current_user) }.sum / current_user.student_lectures.size) <= 50 ? 'grade-red' : average_grade <= 80 ? 'grade-orange' : 'grade-green' %>">
+              <%= average_grade %>%
             </span>
           </p>
         </div>
