@@ -41,7 +41,11 @@ class LecturesController < ApplicationController
   def update
     @lecture = Lecture.find(params[:id])
     authorize @lecture
-    redirect_to lecture_path(@lecture) if @lecture.update(lecture_params)
+    if @lecture.update(lecture_params)
+      redirect_to lecture_path(@lecture)
+    else
+      render :edit
+    end
   end
 
   def destroy

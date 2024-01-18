@@ -1,4 +1,5 @@
 <turbo-frame id="results-frame">
+  <%= link_to 'Back to lecture', lecture_path(lecture), class: 'btn btn-primary', data: { turbo: false } %>
   <div id="correct-answers" class="mb-4">
     <h1>Your results</h1>
     <h2>Your total score for this quiz on <%= lecture.title %> was: <%= quiz.grade %>/ 10</h2>
@@ -9,11 +10,11 @@
       <div class="list-group-item">
         <h5 class="mb-1"><%= question.title %></h5>
         <% if question.correct? %>
-          <p class="mb-1 text-success">✅: <%= question.correct_answer_value %> - <%= question.correct_answer_label %></p>
+          <p class="mb-1 text-success" style="font-weight: bold; border: 1px solid #28a745; padding: 10px;">✅: <%= question.correct_answer_value %> - <%= question.correct_answer_label %></p>
         <% else %>
-          <p class="mb-1 text-danger">❌ Your answer</p>
+          <p class="mb-1 text-danger" style="font-weight: bold;">❌ Your answer</p>
           <hr>
-          <p class="mb-1 text-success">Correct answer: <%= question.correct_answer_value %> - <%= question.correct_answer_label %></p>
+          <p class="mb-1 text-success" style="font-weight: bold; border: 1px solid #28a745; padding: 10px;">Correct answer: <%= question.correct_answer_value %> - <%= question.correct_answer_label %></p>
         <% end %>
       </div>
     <% end %>

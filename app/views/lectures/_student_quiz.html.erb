@@ -1,48 +1,34 @@
-<%= turbo_frame_tag dom_id(@lecture) do %>
-  <div class="quiz">
-    <% @quiz = @lecture.quiz_for_student(current_user) %>
-    <% quizz_questions = @quiz.questions %>
-
-    <% if @quiz.submitted? %>
-      <div class="alert alert-info">
-        You have already submitted this quiz.
-        <%= @quiz.grade %>
-      </div>
-    <% else %>
-      <a class="btn btn-primary mb-3" href="#" role="button" id="nextQuestion">Next</a>
-      <%= form_with url: lecture_quiz_path(@lecture, @quiz, submit_quiz: true), method: :patch do |form| %>
-        <div id="quizCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
-          <div class="carousel-inner">
-            <% quizz_questions.each_with_index do |question, index| %>
-              <div class="carousel-item <%= 'active' if index.zero? %>">
-                <h2><%= question.title %></h2>
-                <% question.answers.each do |answer| %>
-                  <div class="form-check">
-                    <%= form.radio_button "answers[#{question.id}]", answer.value, class: 'form-check-input' %>
-                    <%= form.label "answers[#{question.id}]", answer.content, value: answer.id, class: 'form-check-label' %>
+<%= turbo_frame_tag "quiz" do %>
+  <div data-controller="quiz" id="quiz-container" class="col-8 p-5 lecture-summary" style="min-height: 100vh;">
+    <div class="text-center mt-5">
+      <div class="quiz">
+        <% if quiz.submitted? %>
+          <div class="alert alert-info">
+            You have already submitted this quiz.
+            <%= quiz.grade %>
+          </div>
+        <% else %>
+          <button class="btn btn-primary mb-3" data-action="click->quiz#nextQuestion">Next</button>
+          <%= form_with url: lecture_quiz_path(lecture, quiz, submit_quiz: true), method: :patch do |form| %>
+            <div data-quiz-target="quizCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+              <div class="carousel-inner">
+                <% quiz.questions.each_with_index do |question, index| %>
+                  <div class="carousel-item <%= 'active' if index.zero? %>">
+                    <h2><%= question.title %></h2>
+                    <% question.answers.each do |answer| %>
+                      <div class="form-check">
+                        <%= form.radio_button "answers[#{question.id}]", answer.value, class: 'form-check-input' %>
+                        <%= form.label "answers[#{question.id}]", answer.content, value: answer.id, class: 'form-check-label' %>
+                      </div>
+                    <% end %>
                   </div>
                 <% end %>
               </div>
-            <% end %>
-          </div>
-        </div>
-        <%= form.submit 'Submit', class: 'btn btn-danger mt-2' %>
-      <% end %>
-    <% end %>
+            </div>
+            <%= form.submit 'Submit', class: 'btn btn-danger mt-2' %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
   </div>
 <% end %>
-
-<script>
-  document.getElementById('nextQuestion').addEventListener('click', function(event) {
-    event.preventDefault();
-    var $carousel = $('#quizCarousel');
-    var $activeItem = $carousel.find('.carousel-item.active');
-    var isLastItem = $carousel.find('.carousel-item').index($activeItem) >= 9;
-
-    if (!isLastItem) {
-      $carousel.carousel('next');
-    } else {
-      this.style.display = 'none'; // Hide the "Next" button
-    }
-  });
-</script>

@@ -1,14 +1,17 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "quizContainer", "fakeQuizContainer", "code", "editForm", "notes", "noteForm", "noteContent", "editNoteForm", "addNoteButton"]
+  static targets = [ "generateQuizButton", "loadingButton", "quizContainer", "fakeQuizContainer", "code", "editForm", "notes", "noteForm", "noteContent", "editNoteForm", "addNoteButton"]
 
   connect() {
-    console.log("Hello, Stimulus!")
+  }
+
+  toggleLoadingMessage() {
+    this.generateQuizButtonTarget.classList.add("d-none")
+    this.loadingButtonTarget.classList.remove("d-none")
   }
 
   toggleQuiz() {
-    console.log("Hello, Stimulus!");
     this.fakeQuizContainerTarget.classList.toggle("d-none")
   }
 
