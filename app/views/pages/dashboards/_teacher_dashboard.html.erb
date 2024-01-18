@@ -1,6 +1,5 @@
 <div class="row p-5">
   <div class="calendar-container col-7">
-    <% @reminders ||= [] %>
     <%= month_calendar(events: @reminders) do |date, reminders| %>
       <%= date %>
       <% reminders.each do |reminder| %>
