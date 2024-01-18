@@ -2,21 +2,42 @@
   <div class="calendar-container col-7">
     <%= month_calendar(events: @reminders) do |date, reminders| %>
       <%= date %>
-      <% reminders.each do |reminder| %>
-        <div class="meeting">
-          <p><%= reminder.name %></p>
-        </div>
-      <% end %>
+        <% reminders.each do |reminder| %>
+          <div class="meeting">
+            <p><%= reminder.name %></p>
+          </div>
+        <% end %>
     <% end %>
   </div>
-  <div class="col-5 d-flex flex-column align-items-center">
-    <div>
-      <% current_user.student_lectures.map(&:lecture).uniq.each do |lecture| %>
-        <div class="student-lecture-card">
-          <div class="card__title"><%= link_to lecture.title, lecture_path(lecture), class:"lecture-title-card" %></div>
-          <div class="card__subtitle"><%= lecture.summary.split.first(10).join(" ") %>...</div>
-          <div class="card__indicator"><span class="card__indicator-amount">Quiz grade:</span> <span class="card__indicator-percentage"><%= lecture.average_quiz_grade %>%</span></div>
-          <div class="card__progress"><progress max="100" value="<%= lecture.average_quiz_grade %>"></progress></div>
+  <div class="col-5">
+    <h1 class="text-center">Lectures</h1>
+    <div class="lecture-container">
+      <div class="d-flex flex-column align-items-center">
+        <% current_user.student_lectures.map(&:lecture).uniq.each do |lecture| %>
+          <div class="student-lecture-card mb-3">
+            <div class="card__title"><%= link_to lecture.title, lecture_path(lecture), class:"lecture-title-card" %></div>
+            <div class="card__subtitle"><%= lecture.summary.split.first(15).join(" ") %>...</div>
+            <div class="card__indicator"><span class="card__indicator-amount">Quiz grade:</span> <span class="card__indicator-percentage"><%= lecture.average_quiz_grade_for_student(current_user) %>%</span></div>
+            <div class="card__progress"><progress max="100" value="<%= lecture.average_quiz_grade_for_student(current_user) %>"></progress></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mt-5">
+      <div class="profile-info-card">
+        <div class="profile-info-image">
+          <%= cl_image_tag(current_user.photo.key, class:"profile-image") %>
         </div>
-      <% end %>
+        <div class="profile-info-textContainer">
+          <p class="profile-info-name"><%= current_user.first_name %> <%= current_user.last_name %></p>
+          <p class="profile-info-email">
+            Average grade:
+            <span class="<%= @average_grade <= 50 ? 'grade-red' : @average_grade <= 80 ? 'grade-orange' : 'grade-green' %>">
+            <%= @average_grade %>%
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

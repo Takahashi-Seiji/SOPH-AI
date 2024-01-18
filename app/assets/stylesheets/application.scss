@@ -11,3 +11,12 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+
+.simple-calendar .prev-month {
+  background: $gray; // Replace #yourColor with the color you want
+}
+
+.simple-calendar .next-month {
+  background: $gray; // Replace #yourColor with the color you want
+}

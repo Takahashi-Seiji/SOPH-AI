@@ -6,7 +6,7 @@ class RemindersController < ApplicationController
     if @reminder.save
       redirect_to dashboard_path
     else
-      render :new
+      puts @reminder.errors.full_messages
     end
   end
 

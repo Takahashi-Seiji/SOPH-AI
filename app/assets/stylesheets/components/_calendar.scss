@@ -15,7 +15,7 @@
   }
 
   .today {
-    background-color: #2bff0065;
+    background-color: $gray;
   }
 
   .weekend {
@@ -30,23 +30,34 @@
 .calendar-btn {
   background-color: transparent;
   padding: 10px;
-  border: 1px solid $green;
+  border: 1px solid $blue;
   border-radius: 10px;
-  color: $white;
+  color: $blue;
+  font-weight: bolder;
+}
+
+.calendar-btn-month {
+  background-color: transparent;
+  padding: 10px;
+  border: 1px solid $orange;
+  border-radius: 10px;
+  color: $orange;
+  font-weight: bolder;
 }
 
 .meeting {
   color: $white;
   padding: 8px 24px;
   border-radius: 4px;
-  background: $green;
+  background: $orange;
   transition: background 0.3s ease;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10px;
 
   &:hover {
-    background: #137200;
+    background: #c27400;
   }
 }
 
@@ -60,9 +71,9 @@
 
 .add-reminder-btn {
   background-color: transparent;
-  border: 1px solid $green;
+  border: 1px solid $blue;
   padding: 10px;
   border-radius: 10px;
-  color: $white;
+  color: $blue;
   margin-left: auto;
 }

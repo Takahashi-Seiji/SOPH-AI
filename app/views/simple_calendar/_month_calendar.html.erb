@@ -2,7 +2,7 @@
   <div class="d-flex align-items-center justify-content-between">
     <div class="calendar-heading my-2">
       <%= link_to t('simple_calendar.previous', default: 'Previous'), calendar.url_for_previous_view, class: 'calendar-btn btn' %>
-      <span class="calendar-title btn calendar-btn"><%= t('date.month_names')[start_date.month] %> <%= start_date.year %></span>
+      <span class="calendar-title btn calendar-btn-month"><%= t('date.month_names')[start_date.month] %> <%= start_date.year %></span>
       <%= link_to t('simple_calendar.next', default: 'Next'), calendar.url_for_next_view, class: 'btn calendar-btn' %>
     </div>
     <button class="btn calendar-btn" data-action="click->calendar#displayCalendarForm">Create Reminder</button>
@@ -10,7 +10,7 @@
   <div class="d-none mt-3 mb-3 calendar-form" data-calendar-target="calendarForm">
     <%= simple_form_for :reminder, url: reminders_path, method: :post do |f| %>
       <%= f.input :name, label: false, placeholder: 'Add a reminder' %>
-      <%= f.input :start_time, as: :date, label: "Date" %>
+      <%= f.input :start_time, as: :date %>
       <%= f.button :submit, 'Add', class: 'add-reminder-btn' %>
     <% end %>
   </div>
