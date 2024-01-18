@@ -21,9 +21,9 @@ class ChatAiService < Gpt4Service
 
   def build_messages
     messages = @lecture.chat.messages.map do |message|
-      [{ role: "user: #{message.student.first_name}", content: message.content}]
+      [{ role: message.role, content: message.content}]
   end
-    messages << [{ role: "user: #{message.student.first_name}", content: @message.content }]
+    messages << [{ role: "user", content: @message.content }]
     messages.prepend([{ role: "user", content: custom_prompt }])
     messages.flatten
   end
