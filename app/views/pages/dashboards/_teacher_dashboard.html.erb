@@ -1,18 +1,51 @@
-<h1>Teacher's lectures</h1>
-<% current_user.lectures.each do |lecture| %>
-<%= link_to lecture.title, lecture_path(lecture) %>
-<%= lecture.summary %>
-<br>
-<% end %>
-<h1>Teacher's students</h1>
-<% current_user.students.uniq.each do |student| %>
-  <%= student.first_name %>
-  <%= student.email %>
-  <br>
-
-  <% student.lectures_joined_as_student.uniq.each do |lecture| %>
-    <%= lecture.title %>
-        <%= lecture.id %>
-
-  <% end %>
-<% end %>
+<div class="row p-5">
+  <div class="calendar-container col-7">
+    <% @reminders ||= [] %>
+    <%= month_calendar(events: @reminders) do |date, reminders| %>
+      <%= date %>
+      <% reminders.each do |reminder| %>
+        <div class="meeting">
+          <p><%= reminder.name %></p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="col-5">
+    <h1 class="text-center mb-4">Lectures</h1>
+    <div class="lecture-container">
+      <div class="d-flex flex-column align-items-center">
+        <% current_user.lectures.uniq.each do |lecture| %>
+          <div class="teacher-lecture-card mb-3">
+            <div class="card__title"><%= link_to lecture.title, lecture_path(lecture), class:"lecture-title-card" %></div>
+            <div class="card__subtitle"><%= lecture.summary.split.first(15).join(" ") %>...</div>
+            <div class="card__indicator"><span class="card__indicator-amount">Lecture quiz grade average:</span> <span class="card__indicator-percentage"><%= (lecture.quizzes.average(:grade).to_f * 100).round / 10 %>%</span></div>
+            <div class="card__progress">
+              <progress max="100" value="<%= (lecture.quizzes.average(:grade).to_f * 100).round / 10 %>"></progress></div>
+            <div class="dropdown mt-2">
+              <a class="btn students-dropdown dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Students
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <% lecture.students.uniq.each do |student| %>
+                  <li class="dropdown-student"><%= student.first_name %> <%= student.last_name %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <div class="">
+    <h1>Teacher's students</h1>
+    <% current_user.students.uniq.each do |student| %>
+      <%= student.first_name %>
+      <%= student.email %>
+      <br>
+      <% student.lectures_joined_as_student.uniq.each do |lecture| %>
+        <%= lecture.title %>
+            <%= lecture.id %>
+      <% end %>
+    <% end %>
+  </div>
+  </div>
+</div>

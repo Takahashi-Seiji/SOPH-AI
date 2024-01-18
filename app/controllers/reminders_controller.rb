@@ -5,6 +5,8 @@ class RemindersController < ApplicationController
     authorize @reminder
     if @reminder.save
       redirect_to dashboard_path
+    else
+      puts @reminder.errors.full_messages
     end
   end
 
