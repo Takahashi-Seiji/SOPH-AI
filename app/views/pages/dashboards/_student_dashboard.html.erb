@@ -17,8 +17,8 @@
           <div class="student-lecture-card mb-3">
             <div class="card__title"><%= link_to lecture.title, lecture_path(lecture), class:"lecture-title-card" %></div>
             <div class="card__subtitle"><%= lecture.summary.split.first(15).join(" ") %>...</div>
-            <div class="card__indicator"><span class="card__indicator-amount">Quiz grade:</span> <span class="card__indicator-percentage"><%= lecture.average_quiz_grade %>%</span></div>
-            <div class="card__progress"><progress max="100" value="<%= lecture.average_quiz_grade %>"></progress></div>
+            <div class="card__indicator"><span class="card__indicator-amount">Quiz grade:</span> <span class="card__indicator-percentage"><%= lecture.average_quiz_grade_for_student(current_user) %>%</span></div>
+            <div class="card__progress"><progress max="100" value="<%= lecture.average_quiz_grade_for_student(current_user) %>"></progress></div>
           </div>
         <% end %>
       </div>
