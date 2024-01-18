@@ -24,7 +24,7 @@
               <% if current_user.photo.attached? %>
                 <%= cl_image_tag(current_user.photo.key, class: "avatar profile-pic", alt: "dropdown menu") %>
               <% else %>
-                No photo attached
+                <%= image_tag("nasa-small.jpg", class:"avatar profile-pic", alt:"dropdown-menu") %>
               <% end %>
             </a>
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
