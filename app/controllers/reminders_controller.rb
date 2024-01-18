@@ -5,8 +5,6 @@ class RemindersController < ApplicationController
     authorize @reminder
     if @reminder.save
       redirect_to dashboard_path
-    else
-      render :new
     end
   end
 
