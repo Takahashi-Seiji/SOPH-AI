@@ -8,7 +8,7 @@
             <%= quiz.grade %>
           </div>
         <% else %>
-          <button class="btn btn-primary mb-3" data-action="click->quiz#nextQuestion">Next</button>
+
           <%= form_with url: lecture_quiz_path(lecture, quiz, submit_quiz: true), method: :patch do |form| %>
             <div data-quiz-target="quizCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
               <div class="carousel-inner">
@@ -25,7 +25,11 @@
                 <% end %>
               </div>
             </div>
-            <%= form.submit 'Submit', class: 'btn btn-danger mt-2' %>
+            <%= form.submit 'Submit', class: 'btn btn-danger d-none', data: { "quiz_target": 'submitButton' } %><div class="d-flex justify-content-between mt-2">
+              <button class="btn btn-primary mb-3" data-action="click->quiz#previousQuestion">Previous</button>
+              <span data-quiz-target="questionNumber" class="mx-2">1</span>
+              <button class="btn btn-primary mb-3" data-action="click->quiz#nextQuestion">Next</button>
+            </div>
           <% end %>
         <% end %>
       </div>
