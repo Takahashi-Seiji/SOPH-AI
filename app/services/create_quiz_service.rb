@@ -6,7 +6,7 @@ class CreateQuizService < Gpt4Service
     We will use JSON.parse to parse the result, so be sure to return a valid json.
     Questions should be clear and concise, you shoudld always generate 10 questions and 4 possible answers for each question. With 1 correct answer and 3 incorrect answers."
 
-    # begin
+    begin
       response = client.chat(
         parameters: {
           model: "gpt-3.5-turbo-1106",
@@ -21,9 +21,10 @@ class CreateQuizService < Gpt4Service
       parsed_content = JSON.parse(response_content)
       parse_quiz_data(parsed_content)
       return { status: 'success', message: 'Quiz created successfully' }
-    # rescue => e
-    #   return { status: 'error', message: e.message }
-    # end
+
+    rescue => e
+      return { status: 'error', message: e.message }
+    end
   end
 
   private
@@ -66,11 +67,11 @@ class CreateQuizService < Gpt4Service
   end
 
   def parse_quiz_data(content)
-    content.each do |question_data|
-      raise
-      question_text = question_data["question"]
+    quiz_data = content.values
+    quiz_data.each do |question_data|
+      question_text = question_data["title"]
       correct_answer = question_data["correct_answer"]
-      question = Question.create!(quizz: @quizz, title: question_text, correct_answer: correct_answer)
+      question = Question.create!(quizz: @quiz, title: question_text, correct_answer: correct_answer)
       question_data["choices"].each do |choice|
         question.answers.create!(value: choice["value"], content: choice["label"])
       end

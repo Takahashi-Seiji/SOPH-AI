@@ -8,7 +8,6 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log("Hello, Stimulus From Chat!");
   }
 
   message(event) {
