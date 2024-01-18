@@ -12,8 +12,8 @@
         <% end %>
       </div>
       <div class="text-center">
-        <button data-action="click->lecture#displayNoteForm" data-lecture-target="addNoteButton" class="mb-3 text-center">Take note</button>
-        <button data-action="click->lecture#displayEditNoteForm" class="text-center">Edit your notes</button>
+        <button data-action="click->lecture#displayNoteForm" data-lecture-target="addNoteButton" class="mb-3 text-center shareable-link">Take note</button>
+        <button data-action="click->lecture#displayEditNoteForm" class="text-center shareable-link">Edit your notes</button>
       </div>
       <div class="d-none" data-lecture-target="noteForm">
         <%= simple_form_for [@lecture, Note.new], remote: true, data: {action: "submit->lecture#addNote"} do |f| %>
@@ -28,9 +28,9 @@
         <% end %>
       </div>
     </div>
-    <div id="chat" data-controller="chat" data-chat-chat-id-value="<%= @chat.id %>" class="lecture-chat p-3 scrollable-chat">
-      <div data-chat-target="conversationDisplay">
-        <h1>Chat with Soph.AI</h1>
+    <div id="chat" data-controller="chat" data-chat-chat-id-value="<%= @chat.id %>" class="chat-conversation">
+        <h1 class="text-center">Chat with Soph.AI</h1>
+      <div data-chat-target="conversationDisplay" class="conversation-chat mb-3" style="height: 500px; overflow-y: scroll;">
         <%= turbo_frame_tag "messages" do %>
           <%= render 'chat' %>
         <% end %>
@@ -44,7 +44,7 @@
         <h3>Your last grade was:</h3>
         <h1><%= @lecture.quiz_for_student(current_user).grade %></h1>
       <% end %>
-      <button data-action="click->quiz#generateQuiz" data-lecture-id="<%= @lecture.id %>" class="btn btn-primary btn-lg btn-block">
+      <button data-action="click->quiz#generateQuiz" data-lecture-id="<%= @lecture.id %>" class="shareable-link mx-auto mt-3">
         Generate Quiz
       </button>
     </div>
