@@ -36,16 +36,7 @@
       </div>
     </div>
   <div class="">
-    <h1>Teacher's students</h1>
-    <% current_user.students.uniq.each do |student| %>
-      <%= student.first_name %>
-      <%= student.email %>
-      <br>
-      <% student.lectures_joined_as_student.uniq.each do |lecture| %>
-        <%= lecture.title %>
-            <%= lecture.id %>
-      <% end %>
-    <% end %>
+    <h1 class="text-center mt-4">something else here idk</h1>
   </div>
   </div>
 </div>

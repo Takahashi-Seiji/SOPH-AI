@@ -16,7 +16,7 @@ export default class extends Controller {
     const messageContent = this.messageContentTarget.value
     const messageElement = document.createElement("h5")
     messageElement.innerHTML = `<strong>Student:</strong> ${messageContent}`
-    this.conversatioAnDisplayTarget.appendChild(messageElement)
+    this.conversationDisplayTarget.appendChild(messageElement)
     this.messageContentTarget.value = ""
     console.log(messageContent, this.chatIdValue);
 
