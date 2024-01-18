@@ -2,13 +2,11 @@
   <div class="calendar-container col-7">
     <%= month_calendar(events: @reminders) do |date, reminders| %>
       <%= date %>
-      <% if @reminders.length > 0 %>
         <% reminders.each do |reminder| %>
           <div class="meeting">
             <p><%= reminder.name %></p>
           </div>
         <% end %>
-      <% end %>
     <% end %>
   </div>
   <div class="col-5">

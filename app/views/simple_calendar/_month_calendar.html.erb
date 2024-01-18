@@ -10,7 +10,7 @@
   <div class="d-none mt-3 mb-3 calendar-form" data-calendar-target="calendarForm">
     <%= simple_form_for :reminder, url: reminders_path, method: :post do |f| %>
       <%= f.input :name, label: false, placeholder: 'Add a reminder' %>
-      <%= f.input :start_time, as: :date, label: "Date" %>
+      <%= f.input :start_time, as: :date %>
       <%= f.button :submit, 'Add', class: 'add-reminder-btn' %>
     <% end %>
   </div>
