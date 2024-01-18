@@ -26,14 +26,18 @@
     <div class="d-flex justify-content-center mt-5">
       <div class="profile-info-card">
         <div class="profile-info-image">
-          <%= cl_image_tag(current_user.photo.key, class:"profile-image") %>
+          <% if current_user.photo.attached? %>
+            <%= cl_image_tag(current_user.photo.key, class:"profile-image") %>
+          <% else %>
+            <%= image_tag("nasa-small.jpg", class:"profile-image") %>
+          <% end %>
         </div>
         <div class="profile-info-textContainer">
           <p class="profile-info-name"><%= current_user.first_name %> <%= current_user.last_name %></p>
           <p class="profile-info-email">
             Average grade:
-            <span class="<%= @average_grade <= 50 ? 'grade-red' : @average_grade <= 80 ? 'grade-orange' : 'grade-green' %>">
-            <%= @average_grade %>%
+            <span class="<%= (@average_grade || 0) <= 50 ? 'grade-red' : (@average_grade || 0) <= 80 ? 'grade-orange' : 'grade-green' %>">
+            <%= @average_grade || 0 %>%
             </span>
           </p>
         </div>

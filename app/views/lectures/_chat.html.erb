@@ -1,9 +1,9 @@
 <%= turbo_frame_tag "messages" do %>
   <% @chat.messages.each do |message| %>
     <% if message.role == 'user' %>
-      <h5 class="mb-3"><strong class="message-role"><%= message.user.first_name %></strong>: <%= message.content %></h5>
+      <h5 class="mb-3"><strong class="message-role-user"><%= message.user.first_name %></strong>: <%= message.content %></h5>
     <% elsif message.role == 'assistant' %>
-      <h5 class="mb-3"><strong class="message-role">SOPHAI</strong>: <%= message.content %></h5>
+      <h5 class="mb-3"><strong class="message-role-assistant">SOPHAI</strong>: <%= message.content %></h5>
     <% end %>
   <% end %>
 <% end %>

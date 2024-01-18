@@ -4,9 +4,9 @@ class LecturesController < ApplicationController
     @submitted_quizzes_count = @lecture.quizzes.where(user_id: current_user.id).count
     redirect_to root_path unless lecture_accessible?
     authorize current_user, :view_lecture?
-    setup_lecture_resources
 
     if current_user.student?
+      setup_lecture_resources
       authorize_student_actions
       create_student_lecture
       create_or_find_note
@@ -73,7 +73,7 @@ class LecturesController < ApplicationController
   end
 
   def setup_lecture_resources
-    @notes = @lecture.notes
+    @notes = @lecture.notes.where(user: current_user)
     @chat = @lecture.chat || @lecture.create_chat
     @message = Message.new
   end

@@ -1,6 +1,5 @@
 <% if current_user.teacher? %>
   <%= render "pages/dashboards/teacher_dashboard"  %>
-  <%= link_to "Generate Lecture", new_lecture_path %>
 <% elsif current_user.student? %>
   <%= render "pages/dashboards/student_dashboard" %>
 <% end %>

@@ -1,13 +1,13 @@
-<div class="container p-5">
-  <div class="d-flex justify-content-center align-items-center mb-4">
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
     <% if current_user.teacher? %>
       <%= render "shareable_link", lecture: @lecture %>
     <% end %>
-    <%= link_to "Delete this lecture", lecture_path(@lecture), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "button text-decoration-none ms-5" %>
+    <%= link_to "Delete this lecture", lecture_path(@lecture), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "shareable-link mb-3 text-decoration-none ms-5" %>
   </div>
-  <div class="teacher-lecture-summary mb-3">
-    <h1 id="lecture-title" class="text-center"><%= @lecture.title %></h1>
-    <h2 id="lecture-content">
+  <div class="teacher-lecture-summary mb-4">
+    <h1><%= @lecture.title %></h1>
+    <h2>
       <% if lecture.summary.present? %>
         <%= simple_format(@lecture.summary) %>
       <% else %>
@@ -15,12 +15,12 @@
       <% end %>
     </h2>
   </div>
-  <%= link_to "Edit lecture", '#', data: {action: "click->lecture#displayEditForm"}, class:"button text-decoration-none" %>
-  <div class="d-none mt-5" data-lecture-target="editForm">
-    <%= simple_form_for lecture, remote: true do |f| %>
-      <%= f.input :title %>
-      <%= f.text_area :summary, as: :text %>
-      <%= f.button :submit, "Update" %>
-    <% end %>
-  </div>
+  <%= link_to "Edit lecture", "#", data: {action: "click->lecture#displayEditForm"}, class:"shareable-link text-decoration-none mt-4 mb- d-flex justify-content-center align-items-center" %>
+    <div class="d-none edit-lecture-form" data-lecture-target="editForm">
+      <%= simple_form_for lecture, remote: true do |f| %>
+        <%= f.input :title, class:"edit-lecture-title" %>
+        <%= f.text_area :summary, as: :text, class:"edit-lecture-input" %>
+        <%= f.button :submit, "Update", class:"edit-lecture-form-button" %>
+      <% end %>
+    </div>
 </div>
