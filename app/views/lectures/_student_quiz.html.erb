@@ -1,37 +1,41 @@
 <%= turbo_frame_tag "quiz" do %>
-  <div data-controller="quiz" id="quiz-container" class="col-8 p-5 lecture-summary" style="min-height: 100vh;">
-    <div class="text-center mt-5">
-      <div class="quiz">
-        <% if quiz.submitted? %>
-          <div class="alert alert-info">
-            You have already submitted this quiz.
-            <%= quiz.grade %>
-          </div>
-        <% else %>
+  <div data-controller="quiz" id="quiz-loading-wrapper" class="p-5 student-quiz mx-auto text-center effect-3d box-shadow">
+    <div class="quiz-wrapper mt-5 blurr-filter border-radius">
+      <div class="text-center mt-5">
+        <div class="quiz">
+          <% if quiz.submitted? %>
+            <div class="alert alert-info">
+              You have already submitted this quiz.
+              <%= quiz.grade %>
+            </div>
+          <% else %>
 
-          <%= form_with url: lecture_quiz_path(lecture, quiz, submit_quiz: true), method: :patch do |form| %>
-            <div data-quiz-target="quizCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
-              <div class="carousel-inner">
-                <% quiz.questions.each_with_index do |question, index| %>
-                  <div class="carousel-item <%= 'active' if index.zero? %>">
-                    <h2><%= question.title %></h2>
-                    <% question.answers.each do |answer| %>
-                      <div class="form-check">
-                        <%= form.radio_button "answers[#{question.id}]", answer.value, class: 'form-check-input' %>
-                        <%= form.label "answers[#{question.id}]", answer.content, value: answer.id, class: 'form-check-label' %>
+            <%= form_with url: lecture_quiz_path(lecture, quiz, submit_quiz: true), method: :patch do |form| %>
+              <div data-quiz-target="quizCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+                <div class="carousel-inner">
+                  <% quiz.questions.each_with_index do |question, index| %>
+                    <div class="carousel-item <%= 'active' if index.zero? %>">
+                      <div class="question-container">
+                        <h2><%= question.title %></h2>
+                        <% question.answers.each do |answer| %>
+                          <div class="form-check">
+                            <%= form.radio_button "answers[#{question.id}]", answer.value, class: 'form-check-input' %>
+                            <%= form.label "answers[#{question.id}]", answer.content, value: answer.id, class: 'form-check-label' %>
+                          </div>
+                        <% end %>
                       </div>
-                    <% end %>
                   </div>
-                <% end %>
+                  <% end %>
+                </div>
               </div>
-            </div>
-            <%= form.submit 'Submit', class: 'btn btn-danger d-none', data: { "quiz_target": 'submitButton' } %><div class="d-flex justify-content-between mt-2">
-              <button class="btn btn-primary mb-3" data-action="click->quiz#previousQuestion">Previous</button>
-              <span data-quiz-target="questionNumber" class="mx-2">1</span>
-              <button class="btn btn-primary mb-3" data-action="click->quiz#nextQuestion">Next</button>
-            </div>
+              <%= form.submit 'Submit', class: 'btn btn-danger d-none', data: { "quiz_target": 'submitButton' } %><div class="d-flex justify-content-between mt-2">
+                <button class="btn btn-primary mb-3" data-action="click->quiz#previousQuestion">Previous</button>
+                <span data-quiz-target="questionNumber" class="mx-2 font-weight-bold">1</span>
+                <button class="btn btn-primary mb-3" data-action="click->quiz#nextQuestion">Next</button>
+              </div>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
     </div>
   </div>

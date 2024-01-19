@@ -1,3 +1,52 @@
-[data-quiz-target="quizCarousel"] {
-  font-family: 'Roboto', sans-serif;
+body [data-quiz-target] h2, body [data-quiz-target] h3 {
+  font-family: 'Arial', sans-serif;
+}
+
+.student-quiz {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding-top: 40px;
+  width: 100%;
+  max-width: 500px;
+  height: 200px;
+}
+
+#quiz-container {
+}
+
+
+.quiz-wrapper {
+  background-color: rgb(35,39,47);
+  padding: 10px; // Add some padding so the content doesn't touch the edges
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.question-container {
+  padding: 10px; // Add some padding so the content doesn't touch the border
+  margin-bottom: 10px; // Add some margin to separate the questions
+}
+
+.form-check {
+  border-bottom: 1px solid #ccc; // This adds a line between the answers
+  padding-bottom: 5px; // Add some padding so the line doesn't touch the text
+}
+
+#quiz-loading-wrapper {
+  margin-top: 85px;
+  height: 250px;
+  // align in center like:
+}
+
+.quiz-loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 30% !important;
+  color: $white;
+  background-color: $light-gray;
+  border-radius: 20px;
 }
