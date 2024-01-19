@@ -21,7 +21,7 @@
             <% grade = (lecture.quizzes.average(:grade).to_f * 100).round / 10 %>
             <div class="card__progress mb-5">
               <div class="progress-bar
-                <%= grade <= 50 ? 'grade-red' : grade < 80 ? 'grade-orange' : 'grade-green' %>"
+                <%= grade <= 50 ? 'progress-grade-red' : grade < 80 ? 'progress-grade-orange' : 'progress-grade-green' %>"
                 style="width: <%= grade %>%;">
               </div>
             </div>
