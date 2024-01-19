@@ -19,7 +19,7 @@ class LectureSummaryService < Gpt4Service
       )
       response.dig("choices", 0, "message", "content")
     rescue => e
-      puts e.message
+      Rails.logger.error e.message
       return "Sorry, we could not summarize your lecture, please try again later."
     end
   end
