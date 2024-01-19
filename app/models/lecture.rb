@@ -28,6 +28,10 @@ class Lecture < ApplicationRecord
   def average_quiz_grade_for_student(student)
     # Assuming you have a Quiz model and it has a grade attribute
     quizzes = self.quizzes.where(student: student)
-    (quizzes.average(:grade).to_f * 100).round / 10
+    if quizzes.present?
+      (quizzes.average(:grade).to_f * 100).round / 10
+    else
+      0
+    end
   end
 end
