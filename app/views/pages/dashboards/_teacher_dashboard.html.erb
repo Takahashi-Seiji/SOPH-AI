@@ -17,9 +17,14 @@
           <div class="teacher-lecture-card mb-3">
             <div class="card__title"><%= link_to lecture.title, lecture_path(lecture), class:"lecture-title-card" %></div>
             <div class="card__subtitle"><%= lecture.summary.split.first(15).join(" ") %>...</div>
-            <div class="card__indicator"><span class="card__indicator-amount">Lecture quiz grade average:</span> <span class="card__indicator-percentage"><%= (lecture.quizzes.average(:grade).to_f * 100).round / 10 %>%</span></div>
-            <div class="card__progress">
-              <progress max="100" value="<%= (lecture.quizzes.average(:grade).to_f * 100).round / 10 %>"></progress></div>
+            <div class="card__indicator mb-3"><span class="card__indicator-amount">Lecture quiz grade average:</span> <span class="card__indicator-percentage"><%= (lecture.quizzes.average(:grade).to_f * 100).round / 10 %>%</span></div>
+            <% grade = (lecture.quizzes.average(:grade).to_f * 100).round / 10 %>
+            <div class="card__progress mb-5">
+              <div class="progress-bar
+                <%= grade <= 50 ? 'progress-grade-red' : grade < 80 ? 'progres-grade-orange' : 'progress-grade-green' %>"
+                style="width: <%= grade %>%;">
+              </div>
+            </div>
             <div class="dropdown mt-2">
               <a class="btn students-dropdown dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Students
@@ -30,7 +35,9 @@
                     <%= student.first_name %> <%= student.last_name %>:
                     <% quiz = lecture.quizzes.find_by(student: student) %>
                     <% if quiz %>
-                      <%= quiz.grade * 10 %>%
+                      <span class="<%= (quiz.grade * 10) <= 50 ? 'grade-red' : (quiz.grade * 10) <= 80 ? 'grade-orange' : 'grade-green' %>">
+                        <%= quiz.grade * 10 %>%
+                      </span>
                     <% else %>
                       Not yet graded
                     <% end %>
@@ -42,19 +49,24 @@
         <% end %>
       </div>
     </div>
-  <div class="d-flex flex-column jutify-content-center align-items-center">
-    <button class="mx-auto add-lecture-button" data-action="click->generate-lecture#displayGenerateLectureForm">Add a lecture</button>
-    <div class="d-flex flex-column justify-content-center align-items-center mx-auto w-100 d-none p-4" data-generate-lecture-target="generateLectureForm">
+  <div class="d-flex flex-column jutify-content-center align-items-center mt-5">
+    <button class="mx-auto add-lecture-button mb-3" data-action="click->generate-lecture#displayGenerateLectureForm">Add a lecture</button>
+    <div class="d-flex flex-column justify-content-center align-items-center mx-auto w-100 d-none p-4 create-lecture-form" data-generate-lecture-target="generateLectureForm" data-action="submit->generate-lecture#onSubmit">
       <%= simple_form_for @lecture do |f| %>
         <%= f.input :title, input_html: { class: "create-lecture-title-input" } %>
         <%= f.label :instructions, "Content" %>
         <%= f.text_area :content, class:"create-lecture-input" %>
         <%= f.label :instructions, "Further instructions to SOPHAI" %>
         <%= f.text_area :instructions, class:"create-lecture-input"%>
-        <%= f.input :file, as: :file %>
-        <%= f.button :submit, class:"button" %>
+        <%= f.input :file, as: :file, input_html: { style: "background-color: transparent; border-radius: 20px"} %>
+        <%= f.button :submit, class:"shareable-link" %>
       <% end %>
-</div>
+    </div>
+    <div class="text-center">
+      <div class="spinner-border text-primary d-none"  style="width: 6rem; height: 6rem; margin-top: 200px" data-generate-lecture-target="loader" role="status" id="lecture-loader">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
   </div>
   </div>
 </div>
