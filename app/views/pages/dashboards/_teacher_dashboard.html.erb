@@ -33,7 +33,7 @@
                 <% lecture.students.uniq.each do |student| %>
                   <li class="dropdown-student">
                     <%= student.first_name %> <%= student.last_name %>:
-                    <% quiz = lecture.quizzes.find_by(student: student) %>
+                    <% quiz = lecture.quizzes.find_by(student: student, status: "submitted") %>
                     <% if quiz %>
                       <span class="<%= (quiz.grade * 10) <= 50 ? 'grade-red' : (quiz.grade * 10) <= 80 ? 'grade-orange' : 'grade-green' %>">
                         <%= quiz.grade * 10 %>%
