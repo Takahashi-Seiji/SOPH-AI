@@ -30,7 +30,7 @@ class LectureSummaryService < Gpt4Service
 
     Additionally, we had the opportunity to analyze the contents of a PDF file related to the lecture. The PDF content, identified as #{@pdf_text_content}, served as a valuable supplement to our understanding. SOPHIA guided us in extracting meaningful insights from this resource.
 
-    Additionally, we have some instructions for you to follow. Please read them carefully: #{@lecture.instructions} and create the summary accordingly. If you don't recieve any instructions from #{@lecture.intructions} it doesn't matter and you should do the summary either way with the information available.
+    Additionally, we have some instructions for you to follow. Please read them carefully: #{@lecture.instructions} and create the summary accordingly. If you don't recieve any instructions from #{@lecture.instructions} it doesn't matter and you should do the summary either way with the information available.
 
     Now, as your teacher and guide, my responsibility is to distill this wealth of information into a concise and student-friendly summary. Our goal is to present the core concepts in a way that is easily comprehensible.
 
