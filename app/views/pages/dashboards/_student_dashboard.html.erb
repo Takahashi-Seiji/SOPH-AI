@@ -17,8 +17,12 @@
           <div class="student-lecture-card mb-3">
             <div class="card__title"><%= link_to lecture.title, lecture_path(lecture), class:"lecture-title-card" %></div>
             <div class="card__subtitle"><%= lecture.summary.split.first(15).join(" ") %>...</div>
-            <div class="card__indicator"><span class="card__indicator-amount">Quiz grade:</span> <span class="card__indicator-percentage"><%= lecture.average_quiz_grade_for_student(current_user) %>%</span></div>
-            <div class="card__progress"><progress max="100" value="<%= lecture.average_quiz_grade_for_student(current_user) %>"></progress></div>
+            <div class="card__indicator mb-3"><span class="card__indicator-amount">Quiz grade:</span><span class="card__indicator-percentage"
+            style="color: <%= (grade = lecture.average_quiz_grade_for_student(current_user)) <= 50 ? 'red' : grade < 80 ? 'orange' : 'green' %>;">
+            <%= grade %>% </span></div>
+            <div class="card__progress">
+              <div class="progress-bar <%= (grade = lecture.average_quiz_grade_for_student(current_user)) <= 50 ? 'progress-grade-red' : grade < 80 ? 'progress-grade-orange' : 'progress-grade-green' %>" style="width: <%= grade %>%;"></div>
+            </div>
           </div>
         <% end %>
       </div>
@@ -36,8 +40,8 @@
           <p class="profile-info-name"><%= current_user.first_name %> <%= current_user.last_name %></p>
           <p class="profile-info-email">
             Average grade:
-            <span class="<%= (average_grade = current_user.student_lectures.map { |sl| sl.lecture.average_quiz_grade_for_student(current_user) }.sum / current_user.student_lectures.size) <= 50 ? 'grade-red' : average_grade <= 80 ? 'grade-orange' : 'grade-green' %>">
-              <%= average_grade %>%
+            <span class="<%= (average_grade = current_user.student_lectures.map { |sl| sl.lecture.average_quiz_grade_for_student(current_user) }.sum / current_user.student_lectures.size) <= 50 ? 'grade-red' : average_grade < 80 ? 'grade-orange' : 'grade-green' %>">
+              <strong><%= average_grade %>%</strong>
             </span>
           </p>
         </div>

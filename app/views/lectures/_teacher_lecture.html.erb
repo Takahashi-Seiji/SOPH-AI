@@ -3,6 +3,7 @@
     <% if current_user.teacher? %>
       <%= render "shareable_link", lecture: @lecture %>
     <% end %>
+    <%= image_tag "atom.svg", class:"lecture-logo" %>
     <%= link_to "Delete this lecture", lecture_path(@lecture), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "shareable-link mb-3 text-decoration-none ms-5" %>
   </div>
   <div class="teacher-lecture-summary mb-4">

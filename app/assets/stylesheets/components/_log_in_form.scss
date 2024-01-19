@@ -1,5 +1,5 @@
 .log-in-form {
-  border: 1px solid #bdbdbd;
+  background-color: $light-gray;
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -8,11 +8,4 @@
   align-items: center;
   margin: 0 auto;
   width: 25%;
-}
-
-.log-in-button {
-  border-radius: 15px;
-  border: 1px solid #8f8f8f;
-  text-align: center;
-  padding: 8px;
 }
