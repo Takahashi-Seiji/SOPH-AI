@@ -40,9 +40,15 @@
           <p class="profile-info-name"><%= current_user.first_name %> <%= current_user.last_name %></p>
           <p class="profile-info-email">
             Average grade:
-            <span class="<%= (average_grade = current_user.student_lectures.map { |sl| sl.lecture.average_quiz_grade_for_student(current_user) }.sum / current_user.student_lectures.size) <= 50 ? 'grade-red' : average_grade < 80 ? 'grade-orange' : 'grade-green' %>">
-              <strong><%= average_grade %>%</strong>
-            </span>
+            <% if current_user.student_lectures.empty? %>
+              <span class="grade-red">
+                <strong>0%</strong>
+              </span>
+            <% else %>
+              <span class="<%= (average_grade = current_user.student_lectures.map { |sl| sl.lecture.average_quiz_grade_for_student(current_user) }.sum / current_user.student_lectures.size) <= 50 ? 'grade-red' : average_grade < 80 ? 'grade-orange' : 'grade-green' %>">
+                <strong><%= average_grade %>%</strong>
+              </span>
+            <% end %>
           </p>
         </div>
       </div>
