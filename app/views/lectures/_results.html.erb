@@ -1,22 +1,21 @@
 <turbo-frame id="results-frame">
-  <%= link_to 'Back to lecture', lecture_path(lecture), class: 'btn btn-primary', data: { turbo: false } %>
-  <div id="correct-answers" class="mb-4">
-    <h1>Your results</h1>
-    <h2>Your total score for this quiz on <%= lecture.title %> was: <%= quiz.grade %>/ 10</h2>
-  </div>
-
-  <div class="list-group">
-    <% quiz.questions.each do |question| %>
-      <div class="list-group-item">
-        <h5 class="mb-1"><%= question.title %></h5>
-        <% if question.correct? %>
-          <p class="mb-1 text-success" style="font-weight: bold; border: 1px solid #28a745; padding: 10px;">✅: <%= question.correct_answer_value %> - <%= question.correct_answer_label %></p>
-        <% else %>
-          <p class="mb-1 text-danger" style="font-weight: bold;">❌ Your answer  <%= question.answer %></p>
-          <hr>
-          <p class="mb-1 text-success" style="font-weight: bold; border: 1px solid #28a745; padding: 10px;">Correct answer: <%= question.correct_answer_value %> - <%= question.correct_answer_label %></p>
-        <% end %>
-      </div>
-    <% end %>
+  <div class="d-flex justify-content-center align-items-center flex-column">
+    <%= link_to 'Back to lecture', lecture_path(lecture), class: 'shareable-link text-decoration-none mx-auto', data: { turbo: false } %>
+    <div id="correct-answers" class="mb-4">
+      <h2 class="text-center mt-4">Your total score for this quiz on <%= lecture.title %> was: <%= quiz.grade %> / 10</h2>
+    </div>
+    <div class="quiz-results">
+      <% quiz.questions.each do |question| %>
+        <div class="list-group-item mb-4">
+          <h5 class="mb-3"><%= question.title %></h5>
+          <% if question.correct? %>
+            <p class="mb-1 text-success" style="font-weight: bold; padding: 10px;">✅ <%= question.correct_answer_value %> - <%= question.correct_answer_label %></p>
+          <% else %>
+            <p class="mb-1" style="font-weight: bold; color: red;">❌ Your answer:  <%= question.answer %></p>
+            <p class="mb-1 text-warning" style="font-weight: bold; padding: 10px;">Correct answer: <%= question.correct_answer_value %> - <%= question.correct_answer_label %></p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </turbo-frame>
