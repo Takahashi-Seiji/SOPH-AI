@@ -8,13 +8,13 @@
   </div>
   <div class="teacher-lecture-summary mb-4">
     <h1><%= @lecture.title %></h1>
-    <h2>
+    <h4>
       <% if lecture.summary.present? %>
         <%= simple_format(@lecture.summary) %>
       <% else %>
         <%= simple_format(@lecture.content) %>
       <% end %>
-    </h2>
+    </h4>
   </div>
   <%= link_to "Edit lecture", "#", data: {action: "click->lecture#displayEditForm"}, class:"shareable-link text-decoration-none mt-4 mb- d-flex justify-content-center align-items-center" %>
     <div class="d-none edit-lecture-form" data-lecture-target="editForm">

@@ -5,19 +5,19 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["conversationDisplay", "messageContent"]
   static values = {
-    chatId: Number
+    chatId: Number,
+    userFirstName: String
   }
 
   connect() {
     console.log("Hello, Stimulus From Chat!");
-    this.userName = this.element.dataset.chatUserFirstName
   }
 
   message(event) {
     event.preventDefault()
     const messageContent = this.messageContentTarget.value
     const messageElement = document.createElement("h5")
-    messageElement.innerHTML = `<strong class="message-role-user">${this.userName}</strong> ${messageContent}`
+    messageElement.innerHTML = `<strong class="message-role-user">${this.userFirstNameValue}</strong> ${messageContent}`
     this.conversationDisplayTarget.appendChild(messageElement)
     this.messageContentTarget.value = ""
     console.log(messageContent, this.chatIdValue);

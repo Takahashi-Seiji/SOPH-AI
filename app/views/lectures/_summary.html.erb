@@ -1,14 +1,22 @@
 <div class="row">
   <div id="lecture-summary" class="col-8 p-5 lecture-summary" style="min-height: 100vh;">
     <h1 id="lecture-title", class="mb-4 text-center" style="text-decoration: underline";><%= @lecture.title %></h1>
-    <h2 id="lecture-content"><%= simple_format(@lecture.summary) %></h2>
+    <h4 id="lecture-content"><%= simple_format(@lecture.summary) %></h4>
   </div>
   <div class="col-4 p-3">
-    <div class="lecture-notes mb-5 p-3" id="notes">
-      <h1 class="text-center">NOTES</h1>
-      <div data-lecture-target="notes" class="notes-container">
+    <div class="d-flex flex-column justify-content-center align-items-center last-grade">
+      <% if  @lecture.quiz_for_student(current_user)&.status == "submitted" %>
+        <h3>Your last grade was:</h3>
+        <h1 class="<%= @lecture.quiz_for_student(current_user).grade <= 50 ? 'text-danger' : @lecture.quiz_for_student(current_user).grade < 80 ? 'text-warning' : 'text-success' %>">
+          <%= @lecture.quiz_for_student(current_user).grade %>
+        </h1>
+      <% end %>
+    </div>
+    <div class="lecture-notes mb-3 p-3" id="notes">
+      <h1 class="text-center">Notes</h1>
+      <div data-lecture-target="notes" class="notes-container mb-3">
         <% @notes.each do |note| %>
-          <h2><%= simple_format(note.content) %></h2>
+          <h4><%= simple_format(note.content) %></h4>
         <% end %>
       </div>
       <div class="text-center">
@@ -28,7 +36,7 @@
         <% end %>
       </div>
     </div>
-    <div id="chat" data-controller="chat" data-chat-chat-id-value="<%= @chat.id %>" class="chat-conversation">
+    <div id="chat" data-controller="chat" data-chat-chat-id-value="<%= @chat.id %>" data-chat-user-first-name-value="<%= current_user.first_name %>" class="chat-conversation">
         <h1 class="text-center">Chat with Soph.AI</h1>
       <div data-chat-target="conversationDisplay" class="conversation-chat mb-3" style="height: 500px; overflow-y: scroll;">
         <%= turbo_frame_tag "messages" do %>
@@ -40,13 +48,11 @@
         <%= f.button :submit, "Send Message" %>
       <% end %>
     </div>
-      <% if  @lecture.quiz_for_student(current_user)&.status == "submitted" %>
-        <h3>Your last grade was:</h3>
-        <h1><%= @lecture.quiz_for_student(current_user).grade %></h1>
-      <% end %>
-      <button data-action="click->quiz#generateQuiz" data-lecture-id="<%= @lecture.id %>" class="shareable-link mx-auto mt-3">
-        Generate Quiz
+    <div>
+      <button data-action="click->quiz#generateQuiz" data-lecture-id="<%= @lecture.id %>" class="shareable-link mx-auto mt-3 mb-2">
+        Take a quiz
       </button>
+    </div>
     </div>
   </div>
 </div>
